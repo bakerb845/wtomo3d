@@ -11,9 +11,8 @@
          REAL, ALLOCATABLE, DIMENSION(:,:,:) :: rho, rhop, vpr, vsr,  &
                                                 qp, qs, hess3p, hess3s
          COMPLEX, ALLOCATABLE, DIMENSION(:,:,:) :: mu, da, mup, dap
-         COMPLEX omega, keiy
-         REAL kylen
-         INTEGER iom, iky!, mx, my, mz
+         COMPLEX omega
+         INTEGER iom
          LOGICAL qpex, qsex
          SAVE
       END MODULE MODEL_MODULE
@@ -35,7 +34,10 @@
       MODULE SOURCE_MODULE
          IMPLICIT NONE
          CHARACTER(2), ALLOCATABLE :: srctyp(:)
-         REAL, ALLOCATABLE :: ain(:)
+         REAL, ALLOCATABLE, DIMENSION(:) :: ain, bazn, &
+                                            momxx, momyy, momzz, & 
+                                            momxy, momxz, momyz, &
+                                            srcscl, xs, ys, zs
          INTEGER, ALLOCATABLE :: modenum(:)
          SAVE
       END MODULE SOURCE_MODULE
@@ -43,6 +45,7 @@
       MODULE RECPRM_MODULE
          IMPLICIT NONE
          COMPLEX, ALLOCATABLE, DIMENSION(:,:,:) :: receiver 
+         REAL, ALLOCATABLE, DIMENSION(:) :: xr, yr, zr
          SAVE
       END MODULE RECPRM_MODULE
 

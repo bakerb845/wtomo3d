@@ -10,14 +10,18 @@ endif
 ELWAVE = elwave
 
 INTERFACE_OBJ = $(OBJ)/modules.o $(OBJ)/interface.o
-COMMON_OBJ = $(OBJ)/asmble.o $(OBJ)/calcwts.o $(OBJ)/dispersion.o \
-	     $(OBJ)/fdfd3d.o $(OBJ)/fixed3d.o \
-	     $(OBJ)/hetfldsrc.o $(OBJ)/pfdfd3d.o \
-	     $(OBJ)/pml3d.o $(OBJ)/setcoefs3d.o \
-	     $(OBJ)/tpfree.o $(OBJ)/zero.o $(OBJ)/zeroas.o
+FD_OBJ = $(OBJ)/asmble.o $(OBJ)/calcwts.o \
+	 $(OBJ)/fdfd3d.o $(OBJ)/fixed3d.o \
+	 $(OBJ)/pfdfd3d.o $(OBJ)/pml3d.o \
+	 $(OBJ)/setcoefs3d.o $(OBJ)/zeroas.o
+COMMON_OBJ = $(OBJ)/dispersion.o \
+	     $(OBJ)/hetfldsrc.o \
+	     $(OBJ)/srcreg.o $(OBJ)/srcsetup.o \
+	     $(OBJ)/test1d.o $(OBJ)/tpfree.o $(OBJ)/zero.o
 HASKELL_OBJ = $(OBJ)/haskgrn.o
-GRAPH_OBJ = $(OBJ)/test1d.o
-ELWAVE_OBJ = $(OBJ)/elwave.o $(INTERFACE_OBJ) $(COMMON_OBJ) $(HASKELL_OBJ) $(GRAPH_OBJ)
+GRAPH_OBJ = $(OBJ)/srgraphs.o
+ELWAVE_OBJ = $(OBJ)/elwave.o $(INTERFACE_OBJ) $(COMMON_OBJ) \
+	     $(FD_OBJ) $(HASKELL_OBJ) $(GRAPH_OBJ)
 
 all: $(ELWAVE)
 
@@ -60,8 +64,17 @@ $(OBJ)/pfdfd3d.o: pfdfd3d.f
 $(OBJ)/pml3d.o: pml3d.f
 	$(FC) $(FFLAGS) $(INCF) -c pml3d.f -o $(OBJ)/pml3d.o
 
+$(OBJ)/srcsetup.o: srcsetup.f
+	$(FC) $(FFLAGS) $(INCF) -c srcsetup.f -o $(OBJ)/srcsetup.o
+
 $(OBJ)/setcoefs3d.o: setcoefs3d.f
 	$(FC) $(FFLAGS) $(INCF) -c setcoefs3d.f -o $(OBJ)/setcoefs3d.o
+
+$(OBJ)/srcreg.o: srcreg.f
+	$(FC) $(FFLAGS) $(INCF) -c srcreg.f -o $(OBJ)/srcreg.o
+
+$(OBJ)/srgraphs.o: srgraphs.f
+	$(FC) $(FFLAGS) $(INCF) -c srgraphs.f -o $(OBJ)/srgraphs.o
 
 $(OBJ)/test1d.o: test1d.f
 	$(FC) $(FFLAGS) $(INCF) -c test1d.f -o $(OBJ)/test1d.o

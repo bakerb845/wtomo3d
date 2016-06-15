@@ -56,8 +56,76 @@
 
              SUBROUTINE setcoefs3d(iz, ix, iy, ibg)
              IMPLICIT NONE
-             INTEGER, INTENT(IN) :: iz, ix, iy, ibg
+             INTEGER, INTENT(IN) :: iz, ix, iy, ibg 
              END SUBROUTINE setcoefs3d
+
+             SUBROUTINE srcreg(fs, ireg, sspread, dx, dy, dz,  &
+                               xoff, yoff, zoff, ierr)
+             IMPLICIT NONE
+             REAL, INTENT(OUT) :: fs(9, 9, 9)
+             REAL, INTENT(IN) :: sspread, dx, dy, dz, xoff, yoff, zoff
+             INTEGER, INTENT(IN) :: ireg
+             INTEGER, INTENT(OUT) :: ierr
+             END SUBROUTINE srcreg
+
+             SUBROUTINE srcsetup(lsetup,                       &
+                                 xloc, yloc, zloc, sprd, ireg, &
+                                 sterm, swave, ierr)
+             LOGICAL, INTENT(IN) ::  lsetup
+             REAL, INTENT(IN) :: xloc, yloc, zloc, sprd
+             INTEGER, INTENT(IN) :: ireg
+             COMPLEX, DIMENSION(:,:,:), INTENT(INOUT) :: swave
+             COMPLEX, INTENT(INOUT) :: sterm
+             INTEGER, INTENT(OUT) :: ierr
+             END SUBROUTINE srcsetup
+
+             SUBROUTINE srac_getsize(nx, nz, numvert, nedge)
+             IMPLICIT NONE
+             INTEGER, INTENT(IN) :: nx, nz
+             INTEGER, INTENT(OUT) :: numvert, nedge
+             END SUBROUTINE srac_getsize
+
+             SUBROUTINE srac(nx, nz, numvert, nedge, xadj, adjncy)
+             IMPLICIT NONE
+             INTEGER, INTENT(IN) :: nedge, numvert, nx, nz
+             INTEGER, INTENT(OUT) :: xadj(numvert+1), adjncy(2*nedge)
+             END SUBROUTINE srac
+
+             SUBROUTINE srel_getsize(nx, nz, numvert, nedge)
+             IMPLICIT NONE
+             INTEGER, INTENT(IN) :: nx, nz
+             INTEGER, INTENT(OUT) :: numvert, nedge
+             END SUBROUTINE srel_getsize
+
+             SUBROUTINE srel(nx, nz, numvert, nedge, xadj, adjncy)
+             IMPLICIT NONE
+             INTEGER, INTENT(IN) :: nedge, numvert, nx, nz
+             INTEGER, INTENT(OUT) :: xadj(numvert+1), adjncy(2*nedge)
+             END SUBROUTINE srel
+
+             SUBROUTINE srelpl_getsize(nx, nz, numvert, nedge)
+             IMPLICIT NONE
+             INTEGER, INTENT(IN) :: nx, nz
+             INTEGER, INTENT(OUT) :: numvert, nedge
+             END SUBROUTINE srelpl_getsize
+
+             SUBROUTINE srelpl(nx, nz, numvert, nedge, xadj, adjncy)
+             IMPLICIT NONE
+             INTEGER, INTENT(IN) :: nedge, numvert, nx, nz
+             INTEGER, INTENT(OUT) :: xadj(numvert+1), adjncy(2*nedge)
+             END SUBROUTINE srelpl
+
+             SUBROUTINE srel3d_getsize(nx, ny, nz, numvert, nedge)
+             IMPLICIT NONE
+             INTEGER, INTENT(IN) :: nx, ny, nz 
+             INTEGER, INTENT(OUT) :: numvert, nedge
+             END SUBROUTINE srel3d_getsize
+
+             SUBROUTINE srel3d(nx, ny, nz, numvert, nedge, xadj, adjncy)
+             IMPLICIT NONE
+             INTEGER, INTENT(IN) :: nedge, numvert, nx, ny, nz
+             INTEGER, INTENT(OUT) :: xadj(numvert+1), adjncy(2*nedge)
+             END SUBROUTINE srel3d
 
              SUBROUTINE test1d(is3d)
              IMPLICIT NONE
