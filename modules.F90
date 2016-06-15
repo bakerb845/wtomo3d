@@ -1,7 +1,7 @@
       MODULE INIT_MODULE
          IMPLICIT NONE
-         REAL dx, dy, dz, xorig, yorig, zorig
-         INTEGER nx, ny, nz
+         REAL dx, dy, dz, freqbase, xorig, yorig, zorig
+         INTEGER ncom, nx, ny, nz
          LOGICAL freesurf(6), usemin
          SAVE
       END MODULE
@@ -17,6 +17,11 @@
          LOGICAL qpex, qsex
          SAVE
       END MODULE MODEL_MODULE
+
+      MODULE WAVEFIELD_MODULE
+         COMPLEX, ALLOCATABLE, DIMENSION(:,:,:) :: utbkr, vtbkr, wtbkr
+         SAVE
+      END MODULE WAVEFIELD_MODULE
 
       MODULE SRCPRM_MODULE
          IMPLICIT NONE
@@ -170,6 +175,6 @@
       MODULE PYTABS_MODULE
          IMPLICIT NONE
          REAL, ALLOCATABLE, DIMENSION(:,:,:) :: pytab
-         REAL, ALLOCATABLE, DIMENSION(:) :: pyz(:)
+         REAL, ALLOCATABLE, DIMENSION(:) :: pyz
          SAVE
       END MODULE PYTABS_MODULE

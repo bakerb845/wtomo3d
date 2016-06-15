@@ -10,8 +10,9 @@ endif
 ELWAVE = elwave
 
 INTERFACE_OBJ = $(OBJ)/modules.o $(OBJ)/interface.o
-COMMON_OBJ = $(OBJ)/asmble.o $(OBJ)/calcwts.o $(OBJ)/fdfd3d.o \
-	     $(OBJ)/fixed3d.o $(OBJ)/pfdfd3d.o \
+COMMON_OBJ = $(OBJ)/asmble.o $(OBJ)/calcwts.o $(OBJ)/dispersion.o \
+	     $(OBJ)/fdfd3d.o $(OBJ)/fixed3d.o \
+	     $(OBJ)/hetfldsrc.o $(OBJ)/pfdfd3d.o \
 	     $(OBJ)/pml3d.o $(OBJ)/setcoefs3d.o \
 	     $(OBJ)/tpfree.o $(OBJ)/zero.o $(OBJ)/zeroas.o
 HASKELL_OBJ = $(OBJ)/haskgrn.o
@@ -29,6 +30,9 @@ $(OBJ)/asmble.o: asmble.f
 $(OBJ)/calcwts.o: calcwts.f
 	$(FC) $(FFLAGS) $(INCF) -c calcwts.f -o $(OBJ)/calcwts.o
 
+$(OBJ)/dispersion.o: dispersion.f
+	$(FC) $(FFLAGS) $(INCF) -c dispersion.f -o $(OBJ)/dispersion.o
+
 $(OBJ)/fdfd3d.o: fdfd3d.f
 	$(FC) $(FFLAGS) $(INCF) -c fdfd3d.f -o $(OBJ)/fdfd3d.o
 
@@ -40,6 +44,9 @@ $(OBJ)/elwave.o: elwave.f90
 
 $(OBJ)/haskgrn.o: haskgrn.f
 	$(FC) $(FFLAGS) $(INCF) -c haskgrn.f -o $(OBJ)/haskgrn.o
+
+$(OBJ)/hetfldsrc.o: hetfldsrc.f
+	$(FC) $(FFLAGS) $(INCF) -c hetfldsrc.f -o $(OBJ)/hetfldsrc.o
 
 $(OBJ)/interface.o: interface.f90
 	$(FC) $(FFLAGS) $(INCF) $(MODULE) -c interface.f90 -o $(OBJ)/interface.o

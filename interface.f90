@@ -17,6 +17,10 @@
              REAL, INTENT(OUT) :: w1, w2, w3, wm1, wm2, wm3, wm4
              END SUBROUTINE calcwts
 
+             SUBROUTINE dispersion()
+             IMPLICIT NONE
+             END SUBROUTINE dispersion
+
              SUBROUTINE fdfd3d(lbl, iz, ix, iy, ierr)
              IMPLICIT NONE
              INTEGER, INTENT(IN) ::      iz, ix, iy
@@ -28,6 +32,14 @@
              IMPLICIT NONE
              CHARACTER(3), INTENT(IN) :: lbl 
              END SUBROUTINE fixed3d
+
+             SUBROUTINE hetfldsrc (srcfn, sfld, myid, master, ierr)
+             IMPLICIT NONE
+             COMPLEX, INTENT(IN) :: srcfn
+             COMPLEX, DIMENSION(:), INTENT(OUT) :: sfld
+             INTEGER, INTENT(IN) :: myid, master
+             INTEGER, INTENT(OUT) :: ierr
+             END SUBROUTINE hetfldsrc
 
              SUBROUTINE pfdfd3d (lbl, ierr)
              IMPLICIT NONE
