@@ -15,7 +15,7 @@ FD_OBJ = $(OBJ)/asmble.o $(OBJ)/calcwts.o \
 	 $(OBJ)/pfdfd3d.o $(OBJ)/pml3d.o \
 	 $(OBJ)/setcoefs3d.o $(OBJ)/zeroas.o
 COMMON_OBJ = $(OBJ)/dispersion.o \
-	     $(OBJ)/hetfldsrc.o \
+	     $(OBJ)/hetfldsrc.o $(OBJ)/makeuh.o \
 	     $(OBJ)/srcreg.o $(OBJ)/srcsetup.o \
 	     $(OBJ)/test1d.o $(OBJ)/tpfree.o $(OBJ)/zero.o
 HASKELL_OBJ = $(OBJ)/haskgrn.o
@@ -54,6 +54,9 @@ $(OBJ)/hetfldsrc.o: hetfldsrc.f
 
 $(OBJ)/interface.o: interface.f90
 	$(FC) $(FFLAGS) $(INCF) $(MODULE) -c interface.f90 -o $(OBJ)/interface.o
+
+$(OBJ)/makeuh.o: makeuh.f
+	$(FC) $(FFLAGS) $(INCF) -c makeuh.f -o $(OBJ)/makeuh.o
 
 $(OBJ)/modules.o: modules.F90
 	$(MPIF90) $(FFLAGS) $(INCF) $(MODULE) -c modules.F90 -o $(OBJ)/modules.o

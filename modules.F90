@@ -2,7 +2,7 @@
          IMPLICIT NONE
          REAL dx, dy, dz, freqbase, xorig, yorig, zorig
          INTEGER ncom, nx, ny, nz
-         LOGICAL freesurf(6), usemin
+         LOGICAL freesurf(6), totfld, usemin
          SAVE
       END MODULE
 
@@ -18,7 +18,8 @@
       END MODULE MODEL_MODULE
 
       MODULE WAVEFIELD_MODULE
-         COMPLEX, ALLOCATABLE, DIMENSION(:,:,:) :: utbkr, vtbkr, wtbkr
+         COMPLEX, ALLOCATABLE, DIMENSION(:,:,:) :: utbkr, vtbkr, wtbkr,&
+                                                   ufac, vfac, wfac
          SAVE
       END MODULE WAVEFIELD_MODULE
 
@@ -44,8 +45,13 @@
 
       MODULE RECPRM_MODULE
          IMPLICIT NONE
-         COMPLEX, ALLOCATABLE, DIMENSION(:,:,:) :: receiver 
-         REAL, ALLOCATABLE, DIMENSION(:) :: xr, yr, zr
+         COMPLEX, ALLOCATABLE, DIMENSION(:,:,:) :: uest, vest, west,   &
+                                                   utest
+         COMPLEX, ALLOCATABLE, DIMENSION(:,:) :: receiver 
+         REAL, ALLOCATABLE, DIMENSION(:) :: xr, yr, zr, xg, yg, zg
+         INTEGER, ALLOCATABLE, DIMENSION(:,:) :: sg, sr
+         REAL gspread, rspread
+         INTEGER igreg, irreg, nr, ng, recin
          SAVE
       END MODULE RECPRM_MODULE
 

@@ -41,6 +41,13 @@
              INTEGER, INTENT(OUT) :: ierr
              END SUBROUTINE hetfldsrc
 
+             SUBROUTINE makeuh(isrc, sfld, ierr)
+             IMPLICIT NONE
+             INTEGER, INTENT(IN) :: isrc
+             COMPLEX, DIMENSION(:), INTENT(IN) :: sfld
+             INTEGER, INTENT(OUT) :: ierr
+             END SUBROUTINE makeuh
+
              SUBROUTINE pfdfd3d (lbl, ierr)
              IMPLICIT NONE
              CHARACTER(3), INTENT(IN) :: lbl
