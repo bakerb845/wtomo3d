@@ -198,6 +198,7 @@ c---reconstruct vp
 
 c----x distance into PML
       dpmlx = 0.0
+      isnx = 0
       if (ix.le.ipml) then
          dpmlx = pmld - (ix-1)*dx
          isnx = 1
@@ -219,6 +220,7 @@ c---check to be sure we are in the region
 
 c----y distance into PML
       dpmly = 0.0
+      isny = 0
       if (iy.le.ipml) then
          dpmly = pmld - (iy-1)*dx
          isny = 1
@@ -240,6 +242,7 @@ c---check to be sure we are in the region
 
 c----z distance into PML
       dpmlz = 0.0
+      isnz = 0
       if (iz.le.ipml) then
          dpmlz = pmld - (iz-1)*dx
          isnz = 1
