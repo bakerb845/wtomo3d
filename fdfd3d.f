@@ -1,7 +1,8 @@
 c
       SUBROUTINE fdfd3d(lbl, iz, ix, iy, ierr)
 
-      USE INIT_MODULE, ONLY : freesurf, nx, ny, nz, usemin
+      USE INIT_MODULE, ONLY : usemin
+      USE MODEL_MODULE, ONLY : freesurf, nx, ny, nz
       USE PML_MODULE, ONLY : ipml
       USE INTERFACE_MODULE, ONLY : fixed3d, pfdfd3d, pml3d, tpfree
       IMPLICIT NONE

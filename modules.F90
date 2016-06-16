@@ -1,7 +1,7 @@
       MODULE INIT_MODULE
          IMPLICIT NONE
-         REAL dx, dy, dz, freqbase, xorig, yorig, zorig
-         INTEGER ncom, nx, ny, nz
+         !REAL azm, dx, dy, dz, freqbase, xorig, yorig, zorig
+         INTEGER ncom!, nx, ny, nz
          LOGICAL freesurf(6), totfld, usemin
          SAVE
       END MODULE
@@ -12,8 +12,9 @@
                                                 qp, qs, hess3p, hess3s
          COMPLEX, ALLOCATABLE, DIMENSION(:,:,:) :: mu, da, mup, dap
          COMPLEX omega
-         INTEGER iom
-         LOGICAL qpex, qsex
+         REAL azm, dx, dy, dz, freqbase, xorig, yorig, zorig
+         INTEGER iom, nx, ny, nz
+         LOGICAL freesurf(6), qpex, qsex
          SAVE
       END MODULE MODEL_MODULE
 

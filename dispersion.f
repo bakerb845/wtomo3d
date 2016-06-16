@@ -23,8 +23,9 @@ c    Haskell uses the reverse, so we need to conjugate for the background.
 c    We do that in calc1d. - SWR 10/2011
 c 
 c************************************************************************
-      USE INIT_MODULE, ONLY : ncom, freqbase, nx, ny, nz
-      USE MODEL_MODULE, ONLY : da, mu, qs, qp, vsr, vpr, rho, omega 
+      USE INIT_MODULE, ONLY : ncom
+      USE MODEL_MODULE, ONLY : da, mu, qs, qp, vsr, vpr, rho, omega,
+     ;                         freqbase, nx, ny, nz 
       IMPLICIT NONE
 
 c---need to check which of these are really necessary

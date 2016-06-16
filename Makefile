@@ -15,18 +15,18 @@ FD_OBJ = $(OBJ)/asmble.o $(OBJ)/calcwts.o \
 	 $(OBJ)/pfdfd3d.o $(OBJ)/pml3d.o \
 	 $(OBJ)/setcoefs3d.o $(OBJ)/zeroas.o
 COMMON_OBJ = $(OBJ)/dispersion.o \
-	     $(OBJ)/hetfldsrc.o $(OBJ)/makeuh.o \
-	     $(OBJ)/srcreg.o $(OBJ)/srcsetup.o \
+	     $(OBJ)/hetfldsrc.o $(OBJ)/iniparser.o $(OBJ)/makeuh.o \
+	     $(OBJ)/readini.o $(OBJ)/srcreg.o $(OBJ)/srcsetup.o \
 	     $(OBJ)/test1d.o $(OBJ)/tpfree.o $(OBJ)/zero.o
 HASKELL_OBJ = $(OBJ)/haskgrn.o
 GRAPH_OBJ = $(OBJ)/srgraphs.o
-ELWAVE_OBJ = $(OBJ)/elwave.o $(INTERFACE_OBJ) $(COMMON_OBJ) \
-	     $(FD_OBJ) $(HASKELL_OBJ) $(GRAPH_OBJ)
+ELWAVE_OBJ = $(INTERFACE_OBJ) $(COMMON_OBJ) \
+	     $(FD_OBJ) $(HASKELL_OBJ) $(GRAPH_OBJ) $(OBJ)/elwave.o
 
 all: $(ELWAVE)
 
 $(ELWAVE): $(ELWAVE_OBJ)
-	$(MPIF90) $(FFLAGS) $(INCF) -o $(ELWAVE) $(ELWAVE_OBJ)
+	$(MPIF90) $(FFLAGS) $(INCF) -o $(ELWAVE) $(ELWAVE_OBJ) $(LIBALL)
 
 $(OBJ)/asmble.o: asmble.f
 	$(FC) $(FFLAGS) $(INCF) -c asmble.f -o $(OBJ)/asmble.o
@@ -51,6 +51,9 @@ $(OBJ)/haskgrn.o: haskgrn.f
 
 $(OBJ)/hetfldsrc.o: hetfldsrc.f
 	$(FC) $(FFLAGS) $(INCF) -c hetfldsrc.f -o $(OBJ)/hetfldsrc.o
+
+$(OBJ)/iniparser.o: iniparser.c
+	$(CC) $(CFLAGS) $(INC_INI) -c iniparser.c -o $(OBJ)/iniparser.o
 
 $(OBJ)/interface.o: interface.f90
 	$(FC) $(FFLAGS) $(INCF) $(MODULE) -c interface.f90 -o $(OBJ)/interface.o
@@ -78,6 +81,9 @@ $(OBJ)/srcreg.o: srcreg.f
 
 $(OBJ)/srgraphs.o: srgraphs.f
 	$(FC) $(FFLAGS) $(INCF) -c srgraphs.f -o $(OBJ)/srgraphs.o
+
+$(OBJ)/readini.o: readini.f90
+	$(F90) $(FFLAGS) $(INCF) -c readini.f90 -o $(OBJ)/readini.o
 
 $(OBJ)/test1d.o: test1d.f
 	$(FC) $(FFLAGS) $(INCF) -c test1d.f -o $(OBJ)/test1d.o

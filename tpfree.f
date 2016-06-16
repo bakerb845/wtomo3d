@@ -1,11 +1,10 @@
       SUBROUTINE tpfree (lbl, ix, iy, ierr)
 
-      USE INIT_MODULE, ONLY : dx, dy, nx, ny
       USE COEFFS_MODULE, ONLY : daloc, muloc, roloc,
      ;                          da5, da6, da7, da8,
      ;                          lp2u5, lp2u6, lp2u7, lp2u8,
      ;                          u5, u6, u7, u8
-      USE MODEL_MODULE, ONLY : omega
+      USE MODEL_MODULE, ONLY : omega, dx, dy, nx, ny
       USE PML_MODULE, ONLY : pmld, pmlf, ipml
       USE MAT_MODULE
       IMPLICIT NONE

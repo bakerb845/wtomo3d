@@ -9,8 +9,8 @@ c       ibg = 0 means use the current model for assignments
 c       ibg = 1 means use the background model for assignments
 c       
 
-      USE INIT_MODULE, ONLY : freesurf, nx, ny, nz
-      USE MODEL_MODULE, ONLY : da, dap, mu, mup, rho, rhop
+      USE MODEL_MODULE, ONLY : da, dap, mu, mup, rho, rhop,
+     ;                         freesurf, nx, ny, nz
       USE COEFFS_MODULE, ONLY : daloc, muloc, roloc,
      ;                          da1, da2, da3, da4,
      ;                          da5, da6, da7, da8,

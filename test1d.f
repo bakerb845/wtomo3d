@@ -2,8 +2,7 @@
 c     include 'dimension.inc'
 c     include 'init.inc'
 c     include 'common.inc'
-      USE INIT_MODULE, ONLY : nx, ny, nz
-      USE MODEL_MODULE, ONLY : da, mu, rho
+      USE MODEL_MODULE, ONLY : da, mu, rho, nx, ny, nz
       IMPLICIT NONE
       LOGICAL, INTENT(OUT) :: is3d
       COMPLEX da1, mu1, rh1 

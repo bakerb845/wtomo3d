@@ -16,7 +16,7 @@ c
 
       SUBROUTINE hetfldsrc (srcfn, sfld, myid, master, ierr)
 
-      USE INIT_MODULE, ONLY : nx, ny, nz
+      USE MODEL_MODULE, ONLY : nx, ny, nz
       USE WAVEFIELD_MODULE, ONLY : utbkr, vtbkr, wtbkr
       USE MAT_MODULE
       USE MATBG_MODULE

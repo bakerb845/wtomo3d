@@ -14,8 +14,9 @@ c
      ;                          utest,
      ;                          igreg, irreg, ng, nr, recin,
      ;                          gspread, rspread 
-      USE MODEL_MODULE, ONLY : da, mu, iom, omega
-      USE INIT_MODULE, ONLY : dx, dy, dz, nx, ny, nz, totfld
+      USE MODEL_MODULE, ONLY : da, mu, iom, omega,
+     ;                         dx, dy, dz, nx ,ny, nz
+      USE INIT_MODULE, ONLY : totfld
       USE INTERFACE_MODULE, ONLY : srcsetup 
       IMPLICIT NONE
       INTEGER, INTENT(IN) :: isrc

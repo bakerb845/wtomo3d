@@ -20,7 +20,7 @@ c finite spatial extent) but is quite slow when ns and nr are large.
 c NB This subroutine is called ns*nr times during the computation of the 
 c backpropagated wavefields.      G.Hicks, April 2001.
 c**********************************************************************
-      USE INIT_MODULE, ONLY : freesurf, dx, dy, dz, nx, ny, nz
+      USE MODEL_MODULE, ONLY : freesurf, dx, dy, dz, nx, ny, nz
       USE INTERFACE_MODULE, ONLY : srcreg
       IMPLICIT NONE
 

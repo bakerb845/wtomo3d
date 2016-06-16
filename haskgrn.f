@@ -29,7 +29,7 @@ c
 c       Author:  S. Roecker 4/09
 c
       SUBROUTINE haskgrn(df, isrc, ierr)
-      USE INIT_MODULE, ONLY : dz, nz, zorig
+      USE MODEL_MODULE, ONLY : dz, nz, zorig
       USE SOURCE_MODULE, ONLY : ain, srctyp
       USE HASKELL_MODULE, ONLY : nl, ugrn1f, wgrn1f, vp1d, vs1d,
      ;                           rh1d, h1d, vs1disc, vp1disc

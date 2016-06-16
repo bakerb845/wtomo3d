@@ -56,7 +56,6 @@ c       Bring the densities in a roloc(3,3,3) array,  1 = n, 2 = m, 3 = p.   Not
 c       above is (ix, iy, iz), so, for example npm = (ix, iy+1, iz-1)
 c
 c
-      USE INIT_MODULE, ONLY : dx, nx, ny, nz
       USE COEFFS_MODULE, ONLY : daloc, muloc, roloc,
      ;                          lmu1, lmu2, lmu3, lmu4,
      ;                          lmu5, lmu6, lmu7, lmu8,
@@ -66,7 +65,7 @@ c
      ;                          lp2u6, lp2u7, lp2u8,
      ;                          u1, u2, u3, u4, u5, u6, u7, u8,
      ;                          wm1, wm2, wm3, wm4
-      USE MODEL_MODULE, ONLY : omega
+      USE MODEL_MODULE, ONLY : omega, dx, nx, ny, nz
       USE PML_MODULE, ONLY : pmld, pmlf, ipml
       USE MAT_MODULE
       IMPLICIT NONE

@@ -41,6 +41,52 @@
              INTEGER, INTENT(OUT) :: ierr
              END SUBROUTINE hetfldsrc
 
+             REAL(C_DOUBLE) FUNCTION iniparser_getDouble(variable, def, ierr) &
+                            BIND(C, NAME='iniparser_getDouble')
+             USE ISO_C_BINDING
+             IMPLICIT NONE
+             CHARACTER(C_CHAR), INTENT(IN) :: variable(256)
+             REAL(C_DOUBLE), INTENT(IN) :: def
+             INTEGER(C_INT), INTENT(OUT) :: ierr             
+             END FUNCTION  iniparser_getDouble
+
+             REAL(C_FLOAT) FUNCTION iniparser_getFloat(variable, def, ierr) &
+                           BIND(C, NAME='iniparser_getFloat')
+             USE ISO_C_BINDING
+             IMPLICIT NONE
+             CHARACTER(C_CHAR), INTENT(IN) :: variable(256)
+             REAL(C_FLOAT), INTENT(IN) :: def 
+             INTEGER(C_INT), INTENT(OUT) :: ierr  
+             END FUNCTION iniparser_getFloat
+
+             INTEGER(C_INT) FUNCTION iniparser_getInt(variable, def, ierr) &
+                            BIND(C, NAME='iniparser_getInt')
+             USE ISO_C_BINDING
+             IMPLICIT NONE
+             CHARACTER(C_CHAR), INTENT(IN) :: variable(256)
+             INTEGER(C_INT), INTENT(IN) :: def 
+             INTEGER(C_INT), INTENT(OUT) :: ierr
+             END FUNCTION iniparser_getInt
+
+             INTEGER(C_INT) FUNCTION iniparser_getChar(variable, def, ret) &
+                            BIND(C, NAME='iniparser_getChar')
+             USE ISO_C_BINDING
+             IMPLICIT NONE
+             CHARACTER(C_CHAR), INTENT(IN) :: variable(256), def(256)
+             CHARACTER(C_CHAR), INTENT(OUT) :: ret(256)
+             END FUNCTION iniparser_getChar
+
+             INTEGER(C_INT) FUNCTION iniparser_init(ini_file) &
+                            BIND(C, NAME='iniparser_init')
+             USE ISO_C_BINDING
+             IMPLICIT NONE
+             CHARACTER(C_CHAR), INTENT(IN) :: ini_file(256)
+             END FUNCTION iniparser_init
+
+             SUBROUTINE iniparser_finalize() &
+                        BIND(C, NAME='iniparser_finalize')
+             END SUBROUTINE iniparser_finalize
+ 
              SUBROUTINE makeuh(isrc, sfld, ierr)
              IMPLICIT NONE
              INTEGER, INTENT(IN) :: isrc
@@ -86,42 +132,6 @@
              INTEGER, INTENT(OUT) :: ierr
              END SUBROUTINE srcsetup
 
-             SUBROUTINE srac_getsize(nx, nz, numvert, nedge)
-             IMPLICIT NONE
-             INTEGER, INTENT(IN) :: nx, nz
-             INTEGER, INTENT(OUT) :: numvert, nedge
-             END SUBROUTINE srac_getsize
-
-             SUBROUTINE srac(nx, nz, numvert, nedge, xadj, adjncy)
-             IMPLICIT NONE
-             INTEGER, INTENT(IN) :: nedge, numvert, nx, nz
-             INTEGER, INTENT(OUT) :: xadj(numvert+1), adjncy(2*nedge)
-             END SUBROUTINE srac
-
-             SUBROUTINE srel_getsize(nx, nz, numvert, nedge)
-             IMPLICIT NONE
-             INTEGER, INTENT(IN) :: nx, nz
-             INTEGER, INTENT(OUT) :: numvert, nedge
-             END SUBROUTINE srel_getsize
-
-             SUBROUTINE srel(nx, nz, numvert, nedge, xadj, adjncy)
-             IMPLICIT NONE
-             INTEGER, INTENT(IN) :: nedge, numvert, nx, nz
-             INTEGER, INTENT(OUT) :: xadj(numvert+1), adjncy(2*nedge)
-             END SUBROUTINE srel
-
-             SUBROUTINE srelpl_getsize(nx, nz, numvert, nedge)
-             IMPLICIT NONE
-             INTEGER, INTENT(IN) :: nx, nz
-             INTEGER, INTENT(OUT) :: numvert, nedge
-             END SUBROUTINE srelpl_getsize
-
-             SUBROUTINE srelpl(nx, nz, numvert, nedge, xadj, adjncy)
-             IMPLICIT NONE
-             INTEGER, INTENT(IN) :: nedge, numvert, nx, nz
-             INTEGER, INTENT(OUT) :: xadj(numvert+1), adjncy(2*nedge)
-             END SUBROUTINE srelpl
-
              SUBROUTINE srel3d_getsize(nx, ny, nz, numvert, nedge)
              IMPLICIT NONE
              INTEGER, INTENT(IN) :: nx, ny, nz 
@@ -133,6 +143,13 @@
              INTEGER, INTENT(IN) :: nedge, numvert, nx, ny, nz
              INTEGER, INTENT(OUT) :: xadj(numvert+1), adjncy(2*nedge)
              END SUBROUTINE srel3d
+
+             SUBROUTINE READINI_FORWARD(projnm, ierr)
+             USE ISO_C_BINDING
+             IMPLICIT NONE
+             CHARACTER(256), INTENT(IN) :: projnm
+             INTEGER, INTENT(OUT) :: ierr
+             END SUBROUTINE READINI_FORWARD
 
              SUBROUTINE test1d(is3d)
              IMPLICIT NONE
