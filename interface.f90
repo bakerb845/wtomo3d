@@ -54,7 +54,7 @@
                            BIND(C, NAME='iniparser_getFloat')
              USE ISO_C_BINDING
              IMPLICIT NONE
-             CHARACTER(C_CHAR), INTENT(IN) :: variable(256)
+             CHARACTER(C_CHAR), INTENT(IN) :: variable(*)
              REAL(C_FLOAT), INTENT(IN) :: def 
              INTEGER(C_INT), INTENT(OUT) :: ierr  
              END FUNCTION iniparser_getFloat
@@ -63,7 +63,7 @@
                             BIND(C, NAME='iniparser_getInt')
              USE ISO_C_BINDING
              IMPLICIT NONE
-             CHARACTER(C_CHAR), INTENT(IN) :: variable(256)
+             CHARACTER(C_CHAR), INTENT(IN) :: variable(*)
              INTEGER(C_INT), INTENT(IN) :: def 
              INTEGER(C_INT), INTENT(OUT) :: ierr
              END FUNCTION iniparser_getInt
@@ -72,15 +72,24 @@
                             BIND(C, NAME='iniparser_getChar')
              USE ISO_C_BINDING
              IMPLICIT NONE
-             CHARACTER(C_CHAR), INTENT(IN) :: variable(256), def(256)
-             CHARACTER(C_CHAR), INTENT(OUT) :: ret(256)
+             CHARACTER(C_CHAR), INTENT(IN) :: variable(*), def(*)
+             CHARACTER(C_CHAR), INTENT(OUT) :: ret(*)
              END FUNCTION iniparser_getChar
+
+             LOGICAL(C_BOOL) FUNCTION iniparser_getBool(variable, def, ierr) &
+                             BIND(C, NAME='iniparser_getBool')
+             USE ISO_C_BINDING
+             IMPLICIT NONE
+             CHARACTER(C_CHAR), INTENT(IN) :: variable(*)
+             LOGICAL(C_BOOL), INTENT(IN) :: def
+             INTEGER(C_INT), INTENT(OUT) :: ierr
+             END FUNCTION iniparser_getBool
 
              INTEGER(C_INT) FUNCTION iniparser_init(ini_file) &
                             BIND(C, NAME='iniparser_init')
              USE ISO_C_BINDING
              IMPLICIT NONE
-             CHARACTER(C_CHAR), INTENT(IN) :: ini_file(256)
+             CHARACTER(C_CHAR), INTENT(IN) :: ini_file(*)
              END FUNCTION iniparser_init
 
              SUBROUTINE iniparser_finalize() &

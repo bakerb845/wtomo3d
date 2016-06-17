@@ -11,9 +11,10 @@
          REAL, ALLOCATABLE, DIMENSION(:,:,:) :: rho, rhop, vpr, vsr,  &
                                                 qp, qs, hess3p, hess3s
          COMPLEX, ALLOCATABLE, DIMENSION(:,:,:) :: mu, da, mup, dap
+         REAL, ALLOCATABLE, DIMENSION(:) :: freq
          COMPLEX omega
          REAL azm, dx, dy, dz, freqbase, xorig, yorig, zorig
-         INTEGER iom, nx, ny, nz
+         INTEGER iom, nom, nx, ny, nz
          LOGICAL freesurf(6), qpex, qsex
          SAVE
       END MODULE MODEL_MODULE

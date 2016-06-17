@@ -14,8 +14,9 @@ FD_OBJ = $(OBJ)/asmble.o $(OBJ)/calcwts.o \
 	 $(OBJ)/fdfd3d.o $(OBJ)/fixed3d.o \
 	 $(OBJ)/pfdfd3d.o $(OBJ)/pml3d.o \
 	 $(OBJ)/setcoefs3d.o $(OBJ)/zeroas.o
-COMMON_OBJ = $(OBJ)/dispersion.o \
-	     $(OBJ)/hetfldsrc.o $(OBJ)/iniparser.o $(OBJ)/makeuh.o \
+COMMON_OBJ = $(OBJ)/dispersion.o $(OBJ)/h5_cinter.o $(OBJ)/h5_finter.o \
+	     $(OBJ)/hetfldsrc.o $(OBJ)/iniparser.o \
+	     $(OBJ)/memory.o $(OBJ)/makeuh.o $(OBJ)/modelio.o \
 	     $(OBJ)/readini.o $(OBJ)/srcreg.o $(OBJ)/srcsetup.o \
 	     $(OBJ)/test1d.o $(OBJ)/tpfree.o $(OBJ)/zero.o
 HASKELL_OBJ = $(OBJ)/haskgrn.o
@@ -46,6 +47,12 @@ $(OBJ)/fixed3d.o: fixed3d.f
 $(OBJ)/elwave.o: elwave.f90
 	$(MPIF90) $(FFLAGS) $(INCF) -c elwave.f90 -o $(OBJ)/elwave.o
 
+$(OBJ)/h5_cinter.o: h5_cinter.c
+	$(CC) $(CFLAGS) $(INCC) $(INI_HDF5) -c h5_cinter.c -o $(OBJ)/h5_cinter.o
+
+$(OBJ)/h5_finter.o: h5_finter.f90
+	$(F90) $(FFLAGS) $(INCF) $(MODULE) -c h5_finter.f90 -o $(OBJ)/h5_finter.o
+
 $(OBJ)/haskgrn.o: haskgrn.f
 	$(FC) $(FFLAGS) $(INCF) -c haskgrn.f -o $(OBJ)/haskgrn.o
 
@@ -60,6 +67,12 @@ $(OBJ)/interface.o: interface.f90
 
 $(OBJ)/makeuh.o: makeuh.f
 	$(FC) $(FFLAGS) $(INCF) -c makeuh.f -o $(OBJ)/makeuh.o
+
+$(OBJ)/memory.o: memory.f90
+	$(F90) $(FFLAGS) $(INCF) -c memory.f90 -o $(OBJ)/memory.o
+
+$(OBJ)/modelio.o: modelio.f90
+	$(F90) $(FFLAGS) $(INCF) -c modelio.f90 -o $(OBJ)/modelio.o
 
 $(OBJ)/modules.o: modules.F90
 	$(MPIF90) $(FFLAGS) $(INCF) $(MODULE) -c modules.F90 -o $(OBJ)/modules.o
