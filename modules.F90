@@ -2,19 +2,19 @@
          IMPLICIT NONE
          !REAL azm, dx, dy, dz, freqbase, xorig, yorig, zorig
          INTEGER ncom!, nx, ny, nz
-         LOGICAL freesurf(6), totfld, usemin
+         LOGICAL totfld, usemin
          SAVE
       END MODULE
 
       MODULE MODEL_MODULE
          IMPLICIT NONE
          REAL, ALLOCATABLE, DIMENSION(:,:,:) :: rho, rhop, vpr, vsr,  &
-                                                qp, qs, hess3p, hess3s
+                                                qp, qs
          COMPLEX, ALLOCATABLE, DIMENSION(:,:,:) :: mu, da, mup, dap
          REAL, ALLOCATABLE, DIMENSION(:) :: freq
          COMPLEX omega
-         REAL azm, dx, dy, dz, freqbase, xorig, yorig, zorig
-         INTEGER iom, nom, nx, ny, nz
+         REAL azm, dx, dy, dz, freqbase, vpvs, xorig, yorig, zorig
+         INTEGER iom, nom, nomi, nx, ny, nz
          LOGICAL freesurf(6), qpex, qsex
          SAVE
       END MODULE MODEL_MODULE
@@ -27,33 +27,30 @@
 
       MODULE SRCPRM_MODULE
          IMPLICIT NONE
+         CHARACTER(2), ALLOCATABLE, DIMENSION(:) :: srctyp
          COMPLEX, ALLOCATABLE, DIMENSION(:,:) :: source
          REAL, ALLOCATABLE, DIMENSION(:,:) :: dsd
-         INTEGER, ALLOCATABLE, DIMENSION(:) :: isg
-         INTEGER ipadsrc, nsg
-         SAVE
-      END MODULE SRCPRM_MODULE
-
-      MODULE SOURCE_MODULE
-         IMPLICIT NONE
-         CHARACTER(2), ALLOCATABLE :: srctyp(:)
-         REAL, ALLOCATABLE, DIMENSION(:) :: ain, bazn, &
-                                            momxx, momyy, momzz, & 
+         REAL, ALLOCATABLE, DIMENSION(:) :: ain, bazn,           &
+                                            momxx, momyy, momzz, &
                                             momxy, momxz, momyz, &
                                             srcscl, xs, ys, zs
-         INTEGER, ALLOCATABLE :: modenum(:)
+         INTEGER, ALLOCATABLE, DIMENSION(:) :: isg, modenum
+         REAL sspread
+         INTEGER isreg, modsrcp, ns, nsg, srcin
          SAVE
-      END MODULE SOURCE_MODULE
+      END MODULE SRCPRM_MODULE
 
       MODULE RECPRM_MODULE
          IMPLICIT NONE
          COMPLEX, ALLOCATABLE, DIMENSION(:,:,:) :: uest, vest, west,   &
                                                    utest
          COMPLEX, ALLOCATABLE, DIMENSION(:,:) :: receiver 
-         REAL, ALLOCATABLE, DIMENSION(:) :: xr, yr, zr, xg, yg, zg
+         REAL, ALLOCATABLE, DIMENSION(:) :: gwght, rwght, xg, yg, zg, &
+                                            xr, yr, zr
          INTEGER, ALLOCATABLE, DIMENSION(:,:) :: sg, sr
          REAL gspread, rspread
-         INTEGER igreg, irreg, nr, ng, recin
+         INTEGER igreg, irreg, modrecp, nr, ng, recin
+         LOGICAL usegwt, userwt
          SAVE
       END MODULE RECPRM_MODULE
 
@@ -91,6 +88,36 @@
           REAL     roloc(3, 3, 3)
           REAL     w1, w2, w3, wm1, wm2, wm3, wm4
       END MODULE COEFFS_MODULE 
+
+      MODULE FD_ENUM_MODULE
+          INTEGER, PARAMETER :: bem = 1
+          INTEGER, PARAMETER :: ben = 2
+          INTEGER, PARAMETER :: bep = 3
+          INTEGER, PARAMETER :: adm = 4
+          INTEGER, PARAMETER :: adn = 5
+          INTEGER, PARAMETER :: adp = 6
+          INTEGER, PARAMETER :: aam = 7
+          INTEGER, PARAMETER :: aan = 8
+          INTEGER, PARAMETER :: aap = 9
+          INTEGER, PARAMETER :: afm = 10
+          INTEGER, PARAMETER :: afn = 11
+          INTEGER, PARAMETER :: afp = 12
+          INTEGER, PARAMETER :: ddm = 13
+          INTEGER, PARAMETER :: ddn = 14
+          INTEGER, PARAMETER :: ddp = 15
+          INTEGER, PARAMETER :: ffm = 16
+          INTEGER, PARAMETER :: ffn = 17
+          INTEGER, PARAMETER :: ffp = 18
+          INTEGER, PARAMETER :: cdm = 19
+          INTEGER, PARAMETER :: cdn = 20
+          INTEGER, PARAMETER :: cdp = 21
+          INTEGER, PARAMETER :: ccm = 22
+          INTEGER, PARAMETER :: ccn = 23
+          INTEGER, PARAMETER :: ccp = 24
+          INTEGER, PARAMETER :: cfm = 25
+          INTEGER, PARAMETER :: cfn = 26
+          INTEGER, PARAMETER :: cfp = 27
+      END MODULE FD_ENUM_MODULE
 
       MODULE MAT_MODULE
          IMPLICIT NONE
@@ -179,6 +206,7 @@
          COMPLEX, ALLOCATABLE, DIMENSION(:) :: ugrn1f, vgrn1f, wgrn1f
          REAL, ALLOCATABLE, DIMENSION(:) :: vp1d, vs1d, vp1di, vs1di, &
                                             rh1d, h1d, vp1disc, vs1disc
+         INTEGER, ALLOCATABLE :: izint(:)
          INTEGER nl
          SAVE
       END MODULE HASKELL_MODULE
