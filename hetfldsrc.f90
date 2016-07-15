@@ -1,42 +1,51 @@
-c-------------------------------------------------------------------------------------
-c       hetfldsrc.f
-c
-c       author: s. roecker 9/09
-c
-c       this routine calculates the source distribution required for 
-c       a scattered field from
-c
-c               suh = f = -(s - so)uo = (so - s)uo
-c
-c       we solve the above for uh and then add on uo to retrive the total field.
-c
-c       all terms are in general complex, although we read the model files in as real to begin with.
-c
-c
+!-------------------------------------------------------------------------------------
+!       hetfldsrc.f
+!
+!       author: s. roecker 9/09
+!
+!       this routine calculates the source distribution required for 
+!       a scattered field from
+!
+!               suh = f = -(s - so)uo = (so - s)uo
+!
+!       we solve the above for uh and then add on uo to retrive the total field.
+!
+!       all terms are in general complex, although we read the model files in as real to begin with.
+!
+!
 
       SUBROUTINE hetfldsrc (srcfn, sfld, myid, master, ierr)
 
       USE MODEL_MODULE, ONLY : nx, ny, nz
       USE WAVEFIELD_MODULE, ONLY : utbkr, vtbkr, wtbkr
+      USE FD_ENUM_MODULE, ONLY : bem, ben, bep, &
+                                 adm, adn, adp, &
+                                 aam, aan, aap, &
+                                 afm, afn, afp, &
+                                 ddm, ddn, ddp, &
+                                 ffm, ffn, ffp, &
+                                 cdm, cdn, cdp, &
+                                 ccm, ccn, ccp, &
+                                 cfm, cfn, cfp
       USE MAT_MODULE
       USE MATBG_MODULE
       USE INTERFACE_MODULE, ONLY : fdfd3d, setcoefs3d
       IMPLICIT NONE
 
-c---need to check to see which of these is really needed
+!---need to check to see which of these is really needed
 
       COMPLEX, INTENT(IN) :: srcfn
       COMPLEX, DIMENSION(:), INTENT(OUT) :: sfld
       INTEGER, INTENT(IN) :: myid, master
       INTEGER, INTENT(OUT) :: ierr 
 
-c     INTEGER itest
+!     INTEGER itest
         
-c---local variables
+!---local variables
       COMPLEX us, vs, ws
       INTEGER igrd, indx, iz, ix, iy
 
-c---collect all the terms for the current model
+!---collect all the terms for the current model
       ierr = 0
       if (myid.eq.master) then
          write(*,*)'HETFLDSRC: Looping over background coefficients...'
@@ -50,9 +59,9 @@ c---collect all the terms for the current model
                vs = CMPLX(0.0, 0.0)
                ws = CMPLX(0.0, 0.0)
 
-               CALL setcoefs3d (iz, ix, iy, 0)
+               CALL SETCOEFS3D(iz, ix, iy, 0)
 
-               CALL fdfd3d ('ben', iz, ix, iy, ierr)
+               CALL FDFD3D(ben, iz, ix, iy, ierr)
                if (ierr.ne.0) goto 900
                a5nuu1 = a5nuu
                a5nuv1 = a5nuv
@@ -64,7 +73,7 @@ c---collect all the terms for the current model
                a5nwv1 = a5nwv
                a5nww1 = a5nww
                if (iy.gt.1) then
-                  CALL fdfd3d ('bem', iz, ix, iy, ierr)
+                  CALL FDFD3D(bem, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a5muu1 = a5muu
                   a5muv1 = a5muv
@@ -77,7 +86,7 @@ c---collect all the terms for the current model
                   a5mww1 = a5mww
                endif
                if (iy.lt.ny) then
-                  CALL fdfd3d ('bep', iz, ix, iy, ierr)
+                  CALL FDFD3D(bep, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a5puu1 = a5puu
                   a5puv1 = a5puv
@@ -90,7 +99,7 @@ c---collect all the terms for the current model
                   a5pww1 = a5pww
                endif
                if (ix.gt.1.and.iz.gt.1) then
-                  CALL fdfd3d ('adn', iz, ix, iy, ierr)
+                  CALL FDFD3D(adn, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a1nuu1 = a1nuu
                   a1nuv1 = a1nuv
@@ -102,7 +111,7 @@ c---collect all the terms for the current model
                   a1nwv1 = a1nwv
                   a1nww1 = a1nww
                   if (iy.gt.1) then
-                     CALL fdfd3d ('adm', iz, ix, iy, ierr)
+                     CALL FDFD3D(adm, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a1muu1 = a1muu
                      a1muv1 = a1muv
@@ -115,7 +124,7 @@ c---collect all the terms for the current model
                      a1mww1 = a1mww
                   endif
                   if (iy.lt.ny) then
-                     CALL fdfd3d ('adp', iz, ix, iy, ierr)
+                     CALL FDFD3D(adp, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a1puu1 = a1puu
                      a1puv1 = a1puv
@@ -129,7 +138,7 @@ c---collect all the terms for the current model
                   endif
                endif
                if (ix.gt.1) then
-                  CALL fdfd3d ('aan', iz, ix, iy, ierr)
+                  CALL FDFD3D(aan, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a2nuu1 = a2nuu
                   a2nuv1 = a2nuv
@@ -141,7 +150,7 @@ c---collect all the terms for the current model
                   a2nwv1 = a2nwv
                   a2nww1 = a2nww
                   if (iy.gt.1) then
-                     CALL fdfd3d ('aam', iz, ix, iy, ierr)
+                     CALL FDFD3D(aam, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a2muu1 = a2muu
                      a2muv1 = a2muv
@@ -154,7 +163,7 @@ c---collect all the terms for the current model
                      a2mww1 = a2mww
                   endif
                   if (iy.lt.ny) then
-                     CALL fdfd3d ('aap', iz, ix, iy, ierr)
+                     CALL FDFD3D(aap, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a2puu1 = a2puu
                      a2puv1 = a2puv
@@ -168,7 +177,7 @@ c---collect all the terms for the current model
                   endif
                endif
                if (ix.gt.1.and.iz.lt.nz) then
-                  CALL fdfd3d ('afn', iz, ix, iy, ierr)
+                  CALL FDFD3D(afn, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a3nuu1 = a3nuu
                   a3nuv1 = a3nuv
@@ -180,7 +189,7 @@ c---collect all the terms for the current model
                   a3nwv1 = a3nwv
                   a3nww1 = a3nww
                   if (iy.gt.1) then
-                     CALL fdfd3d ('afm', iz, ix, iy, ierr)
+                     CALL FDFD3D(afm, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a3muu1 = a3muu
                      a3muv1 = a3muv
@@ -193,7 +202,7 @@ c---collect all the terms for the current model
                      a3mww1 = a3mww
                   endif
                   if (iy.lt.ny) then
-                     CALL fdfd3d ('afp', iz, ix, iy, ierr)
+                     CALL FDFD3D(afp, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a3puu1 = a3puu
                      a3puv1 = a3puv
@@ -207,7 +216,7 @@ c---collect all the terms for the current model
                   endif
                endif
                if (iz.gt.1) then
-                  CALL fdfd3d ('ddn', iz, ix, iy, ierr)
+                  CALL FDFD3D(ddn, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a4nuu1 = a4nuu
                   a4nuv1 = a4nuv
@@ -219,7 +228,7 @@ c---collect all the terms for the current model
                   a4nwv1 = a4nwv
                   a4nww1 = a4nww
                   if (iy.gt.1) then
-                     CALL fdfd3d ('ddm', iz, ix, iy, ierr)
+                     CALL FDFD3D(ddm, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a4muu1 = a4muu
                      a4muv1 = a4muv
@@ -232,7 +241,7 @@ c---collect all the terms for the current model
                      a4mww1 = a4mww
                   endif
                   if (iy.lt.ny) then
-                     CALL fdfd3d ('ddp', iz, ix, iy, ierr)
+                     CALL FDFD3D(ddp, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a4puu1 = a4puu
                      a4puv1 = a4puv
@@ -246,7 +255,7 @@ c---collect all the terms for the current model
                   endif
                endif
                if (iz.lt.nz) then
-                  CALL fdfd3d ('ffn', iz, ix, iy, ierr)
+                  CALL FDFD3D(ffn, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a6nuu1 = a6nuu
                   a6nuv1 = a6nuv
@@ -258,7 +267,7 @@ c---collect all the terms for the current model
                   a6nwv1 = a6nwv
                   a6nww1 = a6nww
                   if (iy.gt.1) then
-                     CALL fdfd3d ('ffm', iz, ix, iy, ierr)
+                     CALL FDFD3D(ffm, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a6muu1 = a6muu
                      a6muv1 = a6muv
@@ -271,7 +280,7 @@ c---collect all the terms for the current model
                      a6mww1 = a6mww
                   endif
                   if (iy.lt.ny) then
-                     CALL fdfd3d ('ffp', iz, ix, iy, ierr)
+                     CALL FDFD3D(ffp, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a6puu1 = a6puu
                      a6puv1 = a6puv
@@ -285,7 +294,7 @@ c---collect all the terms for the current model
                   endif
                endif
                if (ix.lt.nx.and.iz.gt.1) then
-                  CALL fdfd3d ('cdn', iz, ix, iy, ierr)
+                  CALL FDFD3D(cdn, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a7nuu1 = a7nuu
                   a7nuv1 = a7nuv
@@ -297,7 +306,7 @@ c---collect all the terms for the current model
                   a7nwv1 = a7nwv
                   a7nww1 = a7nww
                   if (iy.gt.1) then
-                     CALL fdfd3d ('cdm', iz, ix, iy, ierr)
+                     CALL FDFD3D(cdm, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a7muu1 = a7muu
                      a7muv1 = a7muv
@@ -310,7 +319,7 @@ c---collect all the terms for the current model
                      a7mww1 = a7mww
                   endif
                   if (iy.lt.ny) then
-                     CALL fdfd3d ('cdp', iz, ix, iy, ierr)
+                     CALL FDFD3D(cdp, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a7puu1 = a7puu
                      a7puv1 = a7puv
@@ -324,7 +333,7 @@ c---collect all the terms for the current model
                   endif
                endif
                if (ix.lt.nx) then
-                  CALL fdfd3d ('ccn', iz, ix, iy, ierr)
+                  CALL FDFD3D(ccn, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a8nuu1 = a8nuu
                   a8nuv1 = a8nuv
@@ -336,7 +345,7 @@ c---collect all the terms for the current model
                   a8nwv1 = a8nwv
                   a8nww1 = a8nww
                   if (iy.gt.1) then
-                     CALL fdfd3d ('ccm', iz, ix, iy, ierr)
+                     CALL FDFD3D(ccm, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a8muu1 = a8muu
                      a8muv1 = a8muv
@@ -349,7 +358,7 @@ c---collect all the terms for the current model
                      a8mww1 = a8mww
                   endif
                   if (iy.lt.ny) then
-                     CALL fdfd3d ('ccp', iz, ix, iy, ierr)
+                     CALL FDFD3D(ccp, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a8puu1 = a8puu
                      a8puv1 = a8puv
@@ -363,7 +372,7 @@ c---collect all the terms for the current model
                   endif
                endif
                if (ix.lt.nx.and.iz.lt.nz) then
-                  CALL fdfd3d ('cfn', iz, ix, iy, ierr)
+                  CALL FDFD3D(cfn, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a9nuu1 = a9nuu
                   a9nuv1 = a9nuv
@@ -375,7 +384,7 @@ c---collect all the terms for the current model
                   a9nwv1 = a9nwv
                   a9nww1 = a9nww
                   if (iy.gt.1) then
-                     CALL fdfd3d ('cfm', iz, ix, iy, ierr)
+                     CALL FDFD3D(cfm, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a9muu1 = a9muu
                      a9muv1 = a9muv
@@ -388,7 +397,7 @@ c---collect all the terms for the current model
                      a9mww1 = a9mww
                   endif
                   if (iy.lt.ny) then
-                     CALL fdfd3d ('cfp', iz, ix, iy, ierr)
+                     CALL FDFD3D(cfp, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a9puu1 = a9puu
                      a9puv1 = a9puv
@@ -402,10 +411,10 @@ c---collect all the terms for the current model
                   endif
                endif
 
-c----background  model
-               CALL setcoefs3d (iz, ix, iy, 1)
+!----background  model
+               CALL SETCOEFS3D(iz, ix, iy, 1)
           
-               CALL fdfd3d ('ben', iz, ix, iy, ierr)
+               CALL FDFD3D(ben, iz, ix, iy, ierr)
                if (ierr.ne.0) goto 900
                a5nuu = a5nuu - a5nuu1
                a5nuv = a5nuv - a5nuv1
@@ -426,7 +435,7 @@ c----background  model
                ws = ws + a5nwv*vtbkr(iz,ix,iy)
                ws = ws + a5nww*wtbkr(iz,ix,iy)
                if (iy.gt.1) then
-                  CALL fdfd3d ('bem', iz, ix, iy, ierr)
+                  CALL FDFD3D(bem, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a5muu = a5muu - a5muu1
                   a5muv = a5muv - a5muv1
@@ -448,7 +457,7 @@ c----background  model
                   ws = ws + a5mww*wtbkr(iz,ix,iy-1)
                endif
                if (iy.lt.ny) then
-                  CALL fdfd3d ('bep', iz, ix, iy, ierr)
+                  CALL FDFD3D(bep, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a5puu = a5puu - a5puu1
                   a5puv = a5puv - a5puv1
@@ -470,7 +479,7 @@ c----background  model
                   ws = ws + a5pww*wtbkr(iz,ix,iy+1)
                endif
                if (ix.gt.1.and.iz.gt.1) then
-                  CALL fdfd3d ('adn', iz, ix, iy, ierr)
+                  CALL FDFD3D(adn, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a1nuu = a1nuu - a1nuu1
                   a1nuv = a1nuv - a1nuv1
@@ -491,7 +500,7 @@ c----background  model
                   ws = ws + a1nwv*vtbkr(iz-1,ix-1,iy)
                   ws = ws + a1nww*wtbkr(iz-1,ix-1,iy)
                   if (iy.gt.1) then
-                     CALL fdfd3d ('adm', iz, ix, iy, ierr)
+                     CALL FDFD3D(adm, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a1muu = a1muu - a1muu1
                      a1muv = a1muv - a1muv1
@@ -513,7 +522,7 @@ c----background  model
                      ws = ws + a1mww*wtbkr(iz-1,ix-1,iy-1)
                   endif
                   if (iy.lt.ny) then
-                     CALL fdfd3d ('adp', iz, ix, iy, ierr)
+                     CALL FDFD3D(adp, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a1puu = a1puu - a1puu1
                      a1puv = a1puv - a1puv1
@@ -536,7 +545,7 @@ c----background  model
                   endif
                endif
                if (ix.gt.1) then
-                  CALL fdfd3d ('aan', iz, ix, iy, ierr)
+                  CALL FDFD3D(aan, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a2nuu = a2nuu - a2nuu1
                   a2nuv = a2nuv - a2nuv1
@@ -557,7 +566,7 @@ c----background  model
                   ws = ws + a2nwv*vtbkr(iz,ix-1,iy)
                   ws = ws + a2nww*wtbkr(iz,ix-1,iy)
                   if (iy.gt.1) then
-                     CALL fdfd3d ('aam', iz, ix, iy, ierr)
+                     CALL FDFD3D(aam, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a2muu = a2muu - a2muu1
                      a2muv = a2muv - a2muv1
@@ -579,7 +588,7 @@ c----background  model
                      ws = ws + a2mww*wtbkr(iz,ix-1,iy-1)
                   endif
                   if (iy.lt.ny) then
-                     CALL fdfd3d ('aap', iz, ix, iy, ierr)
+                     CALL FDFD3D(aap, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a2puu = a2puu - a2puu1
                      a2puv = a2puv - a2puv1
@@ -602,7 +611,7 @@ c----background  model
                   endif
                endif
                if (ix.gt.1.and.iz.lt.nz) then
-                  CALL fdfd3d ('afn', iz, ix, iy, ierr)
+                  CALL FDFD3D(afn, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a3nuu = a3nuu - a3nuu1
                   a3nuv = a3nuv - a3nuv1
@@ -623,7 +632,7 @@ c----background  model
                   ws = ws + a3nwv*vtbkr(iz+1,ix-1,iy)
                   ws = ws + a3nww*wtbkr(iz+1,ix-1,iy)
                   if (iy.gt.1) then
-                     CALL fdfd3d ('afm', iz, ix, iy, ierr)
+                     CALL FDFD3D(afm, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a3muu = a3muu - a3muu1
                      a3muv = a3muv - a3muv1
@@ -645,7 +654,7 @@ c----background  model
                      ws = ws + a3mww*wtbkr(iz+1,ix-1,iy-1)
                   endif
                   if (iy.lt.ny) then
-                     CALL fdfd3d ('afp', iz, ix, iy, ierr)
+                     CALL FDFD3D(afp, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a3puu = a3puu - a3puu1
                      a3puv = a3puv - a3puv1
@@ -668,7 +677,7 @@ c----background  model
                   endif
                endif
                if (iz.gt.1) then
-                  CALL fdfd3d ('ddn', iz, ix, iy, ierr)
+                  CALL FDFD3D(ddn, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a4nuu = a4nuu - a4nuu1
                   a4nuv = a4nuv - a4nuv1
@@ -689,7 +698,7 @@ c----background  model
                   ws = ws + a4nwv*vtbkr(iz-1,ix,iy)
                   ws = ws + a4nww*wtbkr(iz-1,ix,iy)
                   if (iy.gt.1) then
-                     CALL fdfd3d ('ddm', iz, ix, iy, ierr)
+                     CALL FDFD3D(ddm, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a4muu = a4muu - a4muu1
                      a4muv = a4muv - a4muv1
@@ -711,7 +720,7 @@ c----background  model
                      ws = ws + a4mww*wtbkr(iz-1,ix,iy-1)
                   endif
                   if (iy.lt.ny) then
-                     CALL fdfd3d ('ddp', iz, ix, iy, ierr)
+                     CALL FDFD3D(ddp, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a4puu = a4puu - a4puu1
                      a4puv = a4puv - a4puv1
@@ -734,7 +743,7 @@ c----background  model
                   endif
                endif
                if (iz.lt.nz) then
-                  CALL fdfd3d ('ffn', iz, ix, iy, ierr)
+                  CALL FDFD3D(ffn, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a6nuu = a6nuu - a6nuu1
                   a6nuv = a6nuv - a6nuv1
@@ -755,7 +764,7 @@ c----background  model
                   ws = ws + a6nwv*vtbkr(iz+1,ix,iy)
                   ws = ws + a6nww*wtbkr(iz+1,ix,iy)
                   if (iy.gt.1) then
-                     CALL fdfd3d ('ffm', iz, ix, iy, ierr)
+                     CALL FDFD3D(ffm, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a6muu = a6muu - a6muu1
                      a6muv = a6muv - a6muv1
@@ -777,7 +786,7 @@ c----background  model
                      ws = ws + a6mww*wtbkr(iz+1,ix,iy-1)
                   endif
                   if (iy.lt.ny) then
-                     CALL fdfd3d ('ffp', iz, ix, iy, ierr)
+                     CALL FDFD3D(ffp, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a6puu = a6puu - a6puu1
                      a6puv = a6puv - a6puv1
@@ -800,7 +809,7 @@ c----background  model
                   endif
                endif
                if (ix.lt.nx.and.iz.gt.1) then
-                  CALL fdfd3d ('cdn', iz, ix, iy, ierr)
+                  CALL FDFD3D(cdn, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a7nuu = a7nuu - a7nuu1
                   a7nuv = a7nuv - a7nuv1
@@ -821,7 +830,7 @@ c----background  model
                   ws = ws + a7nwv*vtbkr(iz-1,ix+1,iy)
                   ws = ws + a7nww*wtbkr(iz-1,ix+1,iy)
                   if (iy.gt.1) then
-                     CALL fdfd3d ('cdm', iz, ix, iy, ierr)
+                     CALL FDFD3D(cdm, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a7muu = a7muu - a7muu1
                      a7muv = a7muv - a7muv1
@@ -843,7 +852,7 @@ c----background  model
                      ws = ws + a7mww*wtbkr(iz-1,ix+1,iy-1)
                   endif
                   if (iy.lt.ny) then
-                     CALL fdfd3d ('cdp', iz, ix, iy, ierr)
+                     CALL FDFD3D(cdp, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a7puu = a7puu - a7puu1
                      a7puv = a7puv - a7puv1
@@ -866,7 +875,7 @@ c----background  model
                   endif
                endif
                if (ix.lt.nx) then
-                  CALL fdfd3d ('ccn', iz, ix, iy, ierr)
+                  CALL FDFD3D(ccn, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a8nuu = a8nuu - a8nuu1
                   a8nuv = a8nuv - a8nuv1
@@ -887,7 +896,7 @@ c----background  model
                   ws = ws + a8nwv*vtbkr(iz,ix+1,iy)
                   ws = ws + a8nww*wtbkr(iz,ix+1,iy)
                   if (iy.gt.1) then
-                     CALL fdfd3d ('ccm', iz, ix, iy, ierr)
+                     CALL FDFD3D(ccm, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a8muu = a8muu - a8muu1
                      a8muv = a8muv - a8muv1
@@ -909,7 +918,7 @@ c----background  model
                      ws = ws + a8mww*wtbkr(iz,ix+1,iy-1)
                   endif
                   if (iy.lt.ny) then
-                     CALL fdfd3d ('ccp', iz, ix, iy, ierr)
+                     CALL FDFD3D(ccp, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a8puu = a8puu - a8puu1
                      a8puv = a8puv - a8puv1
@@ -932,7 +941,7 @@ c----background  model
                   endif
                endif
                if (ix.lt.nx.and.iz.lt.nz) then
-                  CALL fdfd3d ('cfn', iz, ix, iy, ierr)
+                  CALL FDFD3D(cfn, iz, ix, iy, ierr)
                   if (ierr.ne.0) goto 900
                   a9nuu = a9nuu - a9nuu1
                   a9nuv = a9nuv - a9nuv1
@@ -953,7 +962,7 @@ c----background  model
                   ws = ws + a9nwv*vtbkr(iz+1,ix+1,iy)
                   ws = ws + a9nww*wtbkr(iz+1,ix+1,iy)
                   if (iy.gt.1) then
-                     CALL fdfd3d ('cfm', iz, ix, iy, ierr)
+                     CALL FDFD3D(cfm, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a9muu = a9muu - a9muu1
                      a9muv = a9muv - a9muv1
@@ -975,7 +984,7 @@ c----background  model
                      ws = ws + a9mww*wtbkr(iz+1,ix+1,iy-1)
                   endif
                   if (iy.lt.ny) then
-                     CALL fdfd3d ('cfp', iz, ix, iy, ierr)
+                     CALL FDFD3D(cfp, iz, ix, iy, ierr)
                      if (ierr.ne.0) goto 900
                      a9puu = a9puu - a9puu1
                      a9puv = a9puv - a9puv1
@@ -998,16 +1007,16 @@ c----background  model
                   endif
                endif
 
-c---this was a temporary test to be sure that homogeneous media did not produce any sources
-c       if (myid.eq.master) then
-c         if (us.ne.0.0.or.vs.ne.0.0.or.ws.ne.0.0) then
-c           write(*,*) ' in hetfldsrc:  ', ix, iy, iz, us, vs, ws
-c           stop
-c         endif
-c       endif
+!---this was a temporary test to be sure that homogeneous media did not produce any sources
+!       if (myid.eq.master) then
+!         if (us.ne.0.0.or.vs.ne.0.0.or.ws.ne.0.0) then
+!           write(*,*) ' in hetfldsrc:  ', ix, iy, iz, us, vs, ws
+!           stop
+!         endif
+!       endif
         
-c---convolve the source time function and assign to the source array
-c---note on sign: above we formed (so-s)uo, so the source term should be positive
+!---convolve the source time function and assign to the source array
+!---note on sign: above we formed (so-s)uo, so the source term should be positive
                igrd = (iy-1)*nx*ny + (ix-1)*nz + iz
                indx = 3*igrd-2
                sfld(indx)   =  us*srcfn

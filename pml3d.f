@@ -65,6 +65,15 @@ c
      ;                          lp2u6, lp2u7, lp2u8,
      ;                          u1, u2, u3, u4, u5, u6, u7, u8,
      ;                          wm1, wm2, wm3, wm4
+      USE FD_ENUM_MODULE, ONLY : bem, ben, bep,
+     ;                           adm, adn, adp,
+     ;                           aam, aan, aap,
+     ;                           afm, afn, afp,
+     ;                           ddm, ddn, ddp,
+     ;                           ffm, ffn, ffp,
+     ;                           cdm, cdn, cdp,
+     ;                           ccm, ccn, ccp,
+     ;                           cfm, cfn, cfp
       USE MODEL_MODULE, ONLY : omega, dx, nx, ny, nz
       USE PML_MODULE, ONLY : pmld, pmlf, ipml
       USE MAT_MODULE
@@ -75,8 +84,7 @@ c parameters:
 c       include 'dimension.inc'
 c
 c arguments:
-      INTEGER, INTENT(IN) :: ix, iy, iz
-      CHARACTER(3), INTENT(IN) :: lbl
+      INTEGER, INTENT(IN) :: lbl, ix, iy, iz
       INTEGER, INTENT(OUT) :: ierr
 
 c local variables:
@@ -194,6 +202,7 @@ c---reconstruct vp
       vp = (daloc(2,2,2) + 2.0*muloc(2,2,2))/aro
       vp = CSQRT(vp)
       vpreal = REAL(vp)
+
 
 c----x distance into PML
       dpmlx = 0.0
@@ -332,7 +341,7 @@ c---Divide the above by 4 because B1-4 is an average over 4 systems
       r1xpr1z = r1xqo2dq + r1zqo2dq
       r1ypr1z = r1yqo2dq + r1zqo2dq
 
-      if (lbl.eq.'adm') then
+      if (lbl.eq.adm) then
 
          massf = wm4o8*roloc(1,1,1)
 
@@ -350,7 +359,7 @@ c---Divide the above by 4 because B1-4 is an average over 4 systems
          a1mVW =  r1yr1zo4dq*lpu1
          a1mWV =  a1mVW
 
-      else if (lbl.eq.'adn') then
+      else if (lbl.eq.adn) then
 
          massf = wm3o12*roloc(1,2,1)
 
@@ -367,7 +376,7 @@ c---Divide the above by 4 because B1-4 is an average over 4 systems
          a1nVW =  r1yr1zo4dq*(lmu1 - lmu2)
          a1nWV = -a1nVW
 
-      else if (lbl.eq.'adp') then
+      else if (lbl.eq.adp) then
 
          massf = wm4o8*roloc(1,3,1)
 
@@ -385,7 +394,7 @@ c---Divide the above by 4 because B1-4 is an average over 4 systems
          a1pVW = -r1yr1zo4dq*lpu2
          a1pWV =  a1pVW
 
-      else if (lbl.eq.'aam') then
+      else if (lbl.eq.aam) then
 
          massf = wm3o12*roloc(1,1,2)
 
@@ -400,7 +409,7 @@ c---Divide the above by 4 because B1-4 is an average over 4 systems
          a2mVW = -r1yr1zo4dq*(lmu1 - lmu5)
          a2mWV = -a2mVW
 
-      else if (lbl.eq.'aan') then
+      else if (lbl.eq.aan) then
 
          massf = wm2o6*roloc(1,2,2)
 
@@ -415,7 +424,7 @@ c---Divide the above by 4 because B1-4 is an average over 4 systems
          a2nVW =  r1yr1zo4dq*(lpu2 + lpu5 - lpu1 - lpu6)
          a2nWV =  a2nVW
 
-      else if (lbl.eq.'aap') then
+      else if (lbl.eq.aap) then
 
          massf = wm3o12*roloc(1,3,2)
 
@@ -430,7 +439,7 @@ c---Divide the above by 4 because B1-4 is an average over 4 systems
          a2pVW = -r1yr1zo4dq*(lmu6 - lmu2)
          a2pWV = -a2pVW
 
-      else if (lbl.eq.'afm') then
+      else if (lbl.eq.afm) then
 
          massf = wm4o8*roloc(1,1,3)
 
@@ -448,7 +457,7 @@ c---Divide the above by 4 because B1-4 is an average over 4 systems
          a3mVW = -r1yr1zo4dq*lpu5
          a3mWV =  a3mVW
 
-      else if (lbl.eq.'afn') then
+      else if (lbl.eq.afn) then
 
          massf = wm3o12*roloc(1,2,3)
 
@@ -463,7 +472,7 @@ c---Divide the above by 4 because B1-4 is an average over 4 systems
          a3nVW = -r1yr1zo4dq*(lmu5 - lmu6)
          a3nWV = -a3nVW
 
-      else if (lbl.eq.'afp') then
+      else if (lbl.eq.afp) then
 
          massf = wm4o8*roloc(1,3,3)
 
@@ -481,7 +490,7 @@ c---Divide the above by 4 because B1-4 is an average over 4 systems
          a3pVW =  r1yr1zo4dq*lpu6
          a3pWV =  a3pVW
 
-      else if (lbl.eq.'ddm') then
+      else if (lbl.eq.ddm) then
 
          massf = wm3o12*roloc(2,1,1)
 
@@ -496,7 +505,7 @@ c---Divide the above by 4 because B1-4 is an average over 4 systems
          a4mVW =  r1yr1zo4dq*(lpu1 + lpu3)
          a4mWV =  a4mVW
 
-      else if (lbl.eq.'ddn') then
+      else if (lbl.eq.ddn) then
 
          massf = wm2o6*roloc(2,2,1)
 
@@ -511,7 +520,7 @@ c---Divide the above by 4 because B1-4 is an average over 4 systems
          a4nVW =  r1yr1zo4dq*(lmu1 - lmu4 + lmu3 - lmu2)
          a4nWV = -a4nVW
 
-      else if (lbl.eq.'ddp') then
+      else if (lbl.eq.ddp) then
 
          massf = wm3o12*roloc(2,3,1)
 
@@ -527,7 +536,7 @@ c---Divide the above by 4 because B1-4 is an average over 4 systems
          a4pWV =  a4pVW
 
 
-       else if (lbl.eq.'bem') then
+       else if (lbl.eq.bem) then
 
          massf = wm2o6*roloc(2,1,2)
 
@@ -542,7 +551,7 @@ c---Divide the above by 4 because B1-4 is an average over 4 systems
          a5mVW = -r1yr1zo4dq*(lmu1 - lmu7 - lmu5 + lmu3)
          a5mWV = -a5mVW
 
-      else if (lbl.eq.'ben') then
+      else if (lbl.eq.ben) then
 
          massf = wm1*omegasq*roloc(2,2,2)
 
@@ -579,7 +588,7 @@ c---Divide the above by 4 because B1-4 is an average over 4 systems
      ;                     + lpu5 - lpu6)
          a5nWV = a5nVW
 
-      else if (lbl.eq.'bep') then
+      else if (lbl.eq.bep) then
 
           massf = wm2o6*roloc(2,3,2)
 
@@ -597,7 +606,7 @@ c---Divide the above by 4 because B1-4 is an average over 4 systems
 c       write(*,*) ' in pml3d: a5pUU = ', a5pUU
 c       write(*,*) ' in pml3d: ', r1yqo2dq, u2, u4, u6, u8, massf
 
-      else if (lbl.eq.'ffm') then
+      else if (lbl.eq.ffm) then
 
          massf = wm3o12*roloc(2,1,3)
 
@@ -612,7 +621,7 @@ c       write(*,*) ' in pml3d: ', r1yqo2dq, u2, u4, u6, u8, massf
          a6mVW = -r1yr1zo4dq*(lpu7 + lpu5)
          a6mWV =  a6mVW
 
-      else if (lbl.eq.'ffn') then
+      else if (lbl.eq.ffn) then
 
          massf = wm2o6*roloc(2,2,3)
 
@@ -627,7 +636,7 @@ c       write(*,*) ' in pml3d: ', r1yqo2dq, u2, u4, u6, u8, massf
          a6nVW =  r1yr1zo4dq*(lmu8 - lmu5 + lmu6 - lmu7)
          a6nWV = -a6nVW
 
-      else if (lbl.eq.'ffp') then
+      else if (lbl.eq.ffp) then
 
          massf = wm3o12*roloc(2,3,3)
 
@@ -642,7 +651,7 @@ c       write(*,*) ' in pml3d: ', r1yqo2dq, u2, u4, u6, u8, massf
          a6pVW =  r1yr1zo4dq*(lpu8 + lpu6)
          a6pWV =  a6pVW
 
-      else if (lbl.eq.'cdm') then
+      else if (lbl.eq.cdm) then
 
          massf = wm4o8*roloc(3,1,1)
 
@@ -660,7 +669,7 @@ c       write(*,*) ' in pml3d: ', r1yqo2dq, u2, u4, u6, u8, massf
          a7mVW =  r1yr1zo4dq*lpu3
          a7mWV =  a7mVW
 
-      else if (lbl.eq.'cdn') then
+      else if (lbl.eq.cdn) then
 
          massf = wm3o12*roloc(3,2,1)
 
@@ -675,7 +684,7 @@ c       write(*,*) ' in pml3d: ', r1yqo2dq, u2, u4, u6, u8, massf
          a7nVW = -r1yr1zo4dq*(lmu4 - lmu3)
          a7nWV = -a7nVW
 
-      else if (lbl.eq.'cdp') then
+      else if (lbl.eq.cdp) then
 
          massf = wm4o8*roloc(3,3,1)
 
@@ -693,7 +702,7 @@ c       write(*,*) ' in pml3d: ', r1yqo2dq, u2, u4, u6, u8, massf
          a7pVW = -r1yr1zo4dq*lpu4
          a7pWV =  a7pVW
 
-      else if (lbl.eq.'ccm') then
+      else if (lbl.eq.ccm) then
 
          massf = wm3o12*roloc(3,1,2)
 
@@ -708,7 +717,7 @@ c       write(*,*) ' in pml3d: ', r1yqo2dq, u2, u4, u6, u8, massf
          a8mVW = -r1yr1zo4dq*(lmu3 - lmu7)
          a8mWV = -a8mVW
 
-      else if (lbl.eq.'ccn') then
+      else if (lbl.eq.ccn) then
 
          massf = wm2o6*roloc(3,2,2)
 
@@ -723,7 +732,7 @@ c       write(*,*) ' in pml3d: ', r1yqo2dq, u2, u4, u6, u8, massf
          a8nVW =  r1yr1zo4dq*(lpu7 + lpu4 - lpu8 - lpu3)
          a8nWV =  a8nVW
 
-      else if (lbl.eq.'ccp') then
+      else if (lbl.eq.ccp) then
 
          massf = wm3o12*roloc(3,3,2)
 
@@ -738,7 +747,7 @@ c       write(*,*) ' in pml3d: ', r1yqo2dq, u2, u4, u6, u8, massf
          a8pVW = -r1yr1zo4dq*(lmu8 - lmu4)
          a8pWV = -a8pVW
 
-      else if (lbl.eq.'cfm') then
+      else if (lbl.eq.cfm) then
 
          massf = wm4o8*roloc(3,1,3)
 
@@ -756,8 +765,7 @@ c       write(*,*) ' in pml3d: ', r1yqo2dq, u2, u4, u6, u8, massf
          a9mVW = -r1yr1zo4dq*lpu7
          a9mWV =  a9mVW
 
-      else if (lbl.eq.'cfn') then
-
+      else if (lbl.eq.cfn) then
          massf = wm3o12*roloc(3,2,3)
 
          a9nUU = -r1yqo2dq*(u8 + u7) + massf
@@ -771,7 +779,7 @@ c       write(*,*) ' in pml3d: ', r1yqo2dq, u2, u4, u6, u8, massf
          a9nVW =  r1yr1zo4dq*(lmu8 - lmu7)
          a9nWV = -a9nVW
 
-      else if (lbl.eq.'cfp') then
+      else if (lbl.eq.cfp) then
 
          massf = wm4o8*roloc(3,3,3)
 

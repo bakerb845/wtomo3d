@@ -1,6 +1,6 @@
       SUBROUTINE MODELIO_READ_MODEL(projnm, ierr)
-      USE MODEL_MODULE, ONLY : nx, ny, nz, vpr, vsr, rho, qp, qs, &
-                               da, mu, qpex, qsex
+      USE MODEL_MODULE, ONLY : nx, ny, nz, vpr, vsr, rho, rhop, qp, qs, &
+                               da, dap, mu, mup, qpex, qsex
       USE HDF5_MODULE, ONLY : file_exists, h5_close, h5_item_exists, &
                               h5_open_rdonly, h5_read_float
       USE ISO_C_BINDING
@@ -31,13 +31,16 @@
       ENDIF
       file_id = H5_OPEN_RDONLY(h5fl)
       ! set space
-      IF (.NOT.ALLOCATED(vpr)) ALLOCATE(vpr(nz, nx, ny), STAT=ierr)
-      IF (.NOT.ALLOCATED(vsr)) ALLOCATE(vsr(nz, nx, ny), STAT=ierr)
-      IF (.NOT.ALLOCATED(rho)) ALLOCATE(rho(nz, nx, ny), STAT=ierr)
-      IF (.NOT.ALLOCATED(qp))  ALLOCATE(qp(nz, nx, ny), STAT=ierr)
-      IF (.NOT.ALLOCATED(qs))  ALLOCATE(qs(nz, nx, ny), STAT=ierr)
-      IF (.NOT.ALLOCATED(da))  ALLOCATE(da(nz, nx, ny), STAT=ierr)
-      IF (.NOT.ALLOCATED(mu))  ALLOCATE(mu(nz, nx, ny), STAT=ierr)
+      IF (.NOT.ALLOCATED(vpr))  ALLOCATE(vpr( nz, nx, ny), STAT=ierr)
+      IF (.NOT.ALLOCATED(vsr))  ALLOCATE(vsr( nz, nx, ny), STAT=ierr)
+      IF (.NOT.ALLOCATED(rho))  ALLOCATE(rho( nz, nx, ny), STAT=ierr)
+      IF (.NOT.ALLOCATED(rhop)) ALLOCATE(rhop(nz, nx, ny), STAT=ierr) 
+      IF (.NOT.ALLOCATED(qp))   ALLOCATE(qp(  nz, nx, ny), STAT=ierr)
+      IF (.NOT.ALLOCATED(qs))   ALLOCATE(qs(  nz, nx, ny), STAT=ierr)
+      IF (.NOT.ALLOCATED(da))   ALLOCATE(da(  nz, nx, ny), STAT=ierr)
+      IF (.NOT.ALLOCATED(mu))   ALLOCATE(mu(  nz, nx, ny), STAT=ierr)
+      IF (.NOT.ALLOCATED(dap))  ALLOCATE(dap( nz, nx, ny), STAT=ierr)
+      IF (.NOT.ALLOCATED(mup))  ALLOCATE(mup( nz, nx, ny), STAT=ierr)
       ! get vp model 
       CALL H5_READ_FLOAT('/Model/Vp'//CHAR(0), file_id, x, ierr)
       nxyz = SIZE(x)
@@ -75,14 +78,15 @@
       DO 101 iy=1,ny
          DO 102 ix=1,nx
             DO 103 iz=1,nz
+               rhop(iz,ix,iy) = rho(iz,ix,iy)
                vc = CMPLX(vsr(iz,ix,iy), 0.0) !TODO fix here with p5 mkmod3d.f
                mu(iz,ix,iy) = vc*vc*rho(iz,ix,iy)
                vc = CMPLX(vpr(iz,ix,iy), 0.0) !TODO fix here with p2 mkmod3d.f
                da(iz,ix,iy) = vc*vc*rho(iz,ix,iy) - 2.0*mu(iz,ix,iy)
-               !vc = CMPLX(vsr(iz,ix,iy), 0.0)
-               !mup(iz,ix,iy) = vc*vc*rhop(iz,ix,iy)
-               !vc = CMPLX(vpr(iz,ix,iy) 0.0)
-               !dap(iz,ix,iy) = vc*vc*rhop(iz,ix,iy) - 20*mup(iz,ix,iy)
+               vc = CMPLX(vsr(iz,ix,iy), 0.0)
+               mup(iz,ix,iy) = vc*vc*rhop(iz,ix,iy)
+               vc = CMPLX(vpr(iz,ix,iy), 0.0)
+               dap(iz,ix,iy) = vc*vc*rhop(iz,ix,iy) - 2.0*mup(iz,ix,iy)
   103       CONTINUE
   102    CONTINUE
   101 CONTINUE 

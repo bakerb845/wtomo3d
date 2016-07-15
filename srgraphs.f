@@ -678,14 +678,14 @@ c
 
 c---Loop over 3 x 3 submatrices
       do iy = 1, ny
-         ym = max(iy - 1,1)
-         yp = min(iy + 1,ny)
+         ym = MAX0(iy - 1,1)
+         yp = MIN0(iy + 1,ny)
          do ix = 1, nx
-            xm = max(ix - 1,1)
-            xp = min(ix + 1,nx)
+            xm = MAX0(ix - 1,1)
+            xp = MIN0(ix + 1,nx)
             do iz = 1, nz 
-               zm = max(iz - 1,1)
-               zp = min(iz + 1,nz)
+               zm = MAX0(iz - 1,1)
+               zp = MIN0(iz + 1,nz)
                ngrid = iz + (ix-1)*nz + (iy-1)*nx*nz
 c---loop over the 3 rows of the submatrix
                do irow = 1, 3

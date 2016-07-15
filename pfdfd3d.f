@@ -62,6 +62,15 @@ c
      ;                          lp2u6, lp2u7, lp2u8,
      ;                          u1, u2, u3, u4, u5, u6, u7, u8,
      ;                          wm1, wm2, wm3, wm4
+      USE FD_ENUM_MODULE, ONLY : bem, ben, bep,
+     ;                           adm, adn, adp,
+     ;                           aam, aan, aap,
+     ;                           afm, afn, afp,
+     ;                           ddm, ddn, ddp,
+     ;                           ffm, ffn, ffp,
+     ;                           cdm, cdn, cdp,
+     ;                           ccm, ccn, ccp,
+     ;                           cfm, cfn, cfp
       USE MODEL_MODULE, ONLY : omega, dx
       USE MAT_MODULE
       IMPLICIT NONE
@@ -71,7 +80,7 @@ c parameters:
 c       include 'dimension.inc'
 c
 c arguments:
-      CHARACTER(3), INTENT(IN) :: lbl
+      INTEGER, INTENT(IN) :: lbl
       INTEGER, INTENT(OUT) :: ierr
 
 c local variables:
@@ -150,7 +159,7 @@ c    should divide these terms by 4.
       d2dxsq = d1dxsq/2.0
       d4dxsq = d2dxsq/2.0
 
-      if (lbl.eq.'adm') then
+      if (lbl.eq.adm) then
 
          massf = wm4o8*roloc(1,1,1)
 
@@ -165,7 +174,7 @@ c    should divide these terms by 4.
          a1mVW =  a1mUV
          a1mWV =  a1mUV
 
-      else if (lbl.eq.'adn') then
+      else if (lbl.eq.adn) then
 
          massf = wm3o12*roloc(1,2,1)
 
@@ -183,7 +192,7 @@ c    should divide these terms by 4.
          a1nWV = -a1nVW
 
 
-      else if (lbl.eq.'adp') then
+      else if (lbl.eq.adp) then
 
          massf = wm4o8*roloc(1,3,1)
 
@@ -198,7 +207,7 @@ c    should divide these terms by 4.
          a1pVW =  a1pUV
          a1pWV =  a1pUV
 
-      else if (lbl.eq.'aam') then
+      else if (lbl.eq.aam) then
 
          massf = wm3o12*roloc(1,1,2)
 
@@ -213,7 +222,7 @@ c    should divide these terms by 4.
          a2mVW =  a2mUW
          a2mWV = -a2mUW 
 
-      else if (lbl.eq.'aan') then
+      else if (lbl.eq.aan) then
 
          massf = wm2o6*roloc(1,2,2)
 
@@ -228,7 +237,7 @@ c    should divide these terms by 4.
          a2nVW =  d4dxsq*(lpu2 + lpu5 - lpu1 - lpu6)
          a2nWV =  a2nVW
 
-      else if (lbl.eq.'aap') then
+      else if (lbl.eq.aap) then
 
          massf = wm3o12*roloc(1,3,2)
 
@@ -243,7 +252,7 @@ c    should divide these terms by 4.
          a2pVW = -a2pUW
          a2pWV =  a2pUW
 
-      else if (lbl.eq.'afm') then
+      else if (lbl.eq.afm) then
 
          massf = wm4o8*roloc(1,1,3)
 
@@ -258,7 +267,7 @@ c    should divide these terms by 4.
          a3mVW = -a3mUV
          a3mWV = -a3mUV
 
-      else if (lbl.eq.'afn') then
+      else if (lbl.eq.afn) then
 
          massf = wm3o12*roloc(1,2,3)
 
@@ -273,7 +282,7 @@ c    should divide these terms by 4.
          a3nVW =  a3nUV
          a3nWV = -a3nUV
 
-      else if (lbl.eq.'afp') then
+      else if (lbl.eq.afp) then
 
          massf = wm4o8*roloc(1,3,3)
 
@@ -288,7 +297,7 @@ c    should divide these terms by 4.
          a3pVW = -a3pUV
          a3pWV = -a3pUV
 
-      else if (lbl.eq.'ddm') then
+      else if (lbl.eq.ddm) then
 
          massf = wm3o12*roloc(2,1,1)
 
@@ -303,7 +312,7 @@ c    should divide these terms by 4.
          a4mVW =  d4dxsq*(lpu1 + lpu3)
          a4mWV =  a4mVW
 
-      else if (lbl.eq.'ddn') then
+      else if (lbl.eq.ddn) then
 
          massf = wm2o6*roloc(2,2,1)
 
@@ -318,7 +327,7 @@ c    should divide these terms by 4.
          a4nVW =  d4dxsq*(lmu1 - lmu4 + lmu3 - lmu2)
          a4nWV = -a4nVW
 
-      else if (lbl.eq.'ddp') then
+      else if (lbl.eq.ddp) then
 
          massf = wm3o12*roloc(2,3,1)
 
@@ -333,7 +342,7 @@ c    should divide these terms by 4.
          a4pVW = -d4dxsq*(lpu2 + lpu4)
          a4pWV =  a4pVW
 
-      else if (lbl.eq.'bem') then
+      else if (lbl.eq.bem) then
 
          massf = wm2o6*roloc(2,1,2)
 
@@ -348,7 +357,7 @@ c    should divide these terms by 4.
          a5mVW = -d4dxsq*(lmu1 - lmu7 - lmu5 + lmu3)
          a5mWV = -a5mVW
 
-      else if (lbl.eq.'ben') then
+      else if (lbl.eq.ben) then
 
          massf = wm1*omegasq*roloc(2,2,2)
 
@@ -369,7 +378,7 @@ c    should divide these terms by 4.
      ;                 - lpu6)
          a5nWV = a5nVW
 
-      else if (lbl.eq.'bep') then
+      else if (lbl.eq.bep) then
 
          massf = wm2o6*roloc(2,3,2)
 
@@ -384,7 +393,7 @@ c    should divide these terms by 4.
          a5pVW = -d4dxsq*(lmu8 - lmu2 - lmu4 + lmu6)
          a5pWV = -a5pVW
 
-      else if (lbl.eq.'ffm') then
+      else if (lbl.eq.ffm) then
 
          massf = wm3o12*roloc(2,1,3)
 
@@ -399,7 +408,7 @@ c    should divide these terms by 4.
          a6mVW = -d4dxsq*(lpu7 + lpu5)
          a6mWV =  a6mVW
 
-      else if (lbl.eq.'ffn') then
+      else if (lbl.eq.ffn) then
 
          massf = wm2o6*roloc(2,2,3)
 
@@ -414,7 +423,7 @@ c    should divide these terms by 4.
          a6nVW =  d4dxsq*(lmu8 - lmu5 + lmu6 - lmu7)
          a6nWV = -a6nVW
 
-      else if (lbl.eq.'ffp') then
+      else if (lbl.eq.ffp) then
 
          massf = wm3o12*roloc(2,3,3)
 
@@ -429,7 +438,7 @@ c    should divide these terms by 4.
          a6pVW =  d4dxsq*(lpu8 + lpu6)
          a6pWV =  a6pVW
 
-      else if (lbl.eq.'cdm') then
+      else if (lbl.eq.cdm) then
 
          massf = wm4o8*roloc(3,1,1)
 
@@ -444,7 +453,7 @@ c    should divide these terms by 4.
          a7mVW = -a7mUV
          a7mWV = -a7mUV
 
-      else if (lbl.eq.'cdn') then
+      else if (lbl.eq.cdn) then
 
          massf = wm3o12*roloc(3,2,1)
 
@@ -459,7 +468,7 @@ c    should divide these terms by 4.
          a7nVW =  a7nUV
          a7nWV = -a7nUV
 
-      else if (lbl.eq.'cdp') then
+      else if (lbl.eq.cdp) then
 
          massf = wm4o8*roloc(3,3,1)
 
@@ -474,7 +483,7 @@ c    should divide these terms by 4.
          a7pVW = -a7pUV
          a7pWV = -a7pUV
 
-      else if (lbl.eq.'ccm') then
+      else if (lbl.eq.ccm) then
 
          massf = wm3o12*roloc(3,1,2)
 
@@ -489,7 +498,7 @@ c    should divide these terms by 4.
          a8mVW = -a8mUW
          a8mWV =  a8mUW
 
-      else if (lbl.eq.'ccn') then
+      else if (lbl.eq.ccn) then
 
          massf = wm2o6*roloc(3,2,2)
 
@@ -504,7 +513,7 @@ c    should divide these terms by 4.
          a8nVW =  d4dxsq*(lpu7 + lpu4 - lpu8 - lpu3)
          a8nWV =  a8nVW
 
-      else if (lbl.eq.'ccp') then
+      else if (lbl.eq.ccp) then
 
          massf = wm3o12*roloc(3,3,2)
 
@@ -519,7 +528,7 @@ c    should divide these terms by 4.
          a8pVW =  a8pUW
          a8pWV = -a8pUW
 
-      else if (lbl.eq.'cfm') then
+      else if (lbl.eq.cfm) then
 
          massf = wm4o8*roloc(3,1,3)
 
@@ -534,7 +543,7 @@ c    should divide these terms by 4.
          a9mVW =  a9mUV
          a9mWV =  a9mUV
 
-      else if (lbl.eq.'cfn') then
+      else if (lbl.eq.cfn) then
 
          massf = wm3o12*roloc(3,2,3)
 
@@ -549,7 +558,7 @@ c    should divide these terms by 4.
          a9nVW = -a9nUV
          a9nWV =  a9nUV
 
-      else if (lbl.eq.'cfp') then
+      else if (lbl.eq.cfp) then
 
          massf = wm4o8*roloc(3,3,3)
 

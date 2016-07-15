@@ -76,6 +76,9 @@ c----assign the local arrays.  Note the the ordering of the local arrays is (ix,
 c    that of global arrays is (kz, ix, jy).  The reason for this difference is code legacy for
 c    global arryas and fidelity with my notes for local arrays.
 c
+      daloc(:,:,:) = CMPLX(0.0, 0.0)
+      muloc(:,:,:) = CMPLX(0.0, 0.0)
+      roloc(:,:,:) = 0.0 
       do k = 1, 3
          izg = iz + k - 2
          if (izg.lt.1)  izg = 1
@@ -220,7 +223,7 @@ c---set up some specialty values from these cells
 c---finally, set the system and mass lumping weights
       vp = REAL(CSQRT((daloc(2,2,2) + 2.0*muloc(2,2,2))/roloc(2,2,2)))
       vs = REAL(CSQRT(muloc(2,2,2)/roloc(2,2,2)))
-      CALL calcwts(vp, vs, w1c, w2c, w3c, wm1c, wm2c, wm3c, wm4c)
+      CALL CALCWTS(vp, vs, w1c, w2c, w3c, wm1c, wm2c, wm3c, wm4c)
       w1 = w1c
       w2 = w2c
       w3 = w3c

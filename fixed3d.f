@@ -2,6 +2,15 @@ c***********************************************************************
 c
       SUBROUTINE fixed3d(lbl)
       USE MAT_MODULE
+      USE FD_ENUM_MODULE, ONLY : bem, ben, bep,
+     ;                           adm, adn, adp,
+     ;                           aam, aan, aap,
+     ;                           afm, afn, afp,
+     ;                           ddm, ddn, ddp,
+     ;                           ffm, ffn, ffp,
+     ;                           cdm, cdn, cdp,
+     ;                           ccm, ccn, ccp,
+     ;                           cfm, cfn, cfp
       IMPLICIT NONE
 C
 C     Input:
@@ -21,7 +30,7 @@ C
 c parameters:
 !       include 'dimension.inc'            
 c arguments:
-      CHARACTER(3), INTENT(IN) :: lbl
+      INTEGER, INTENT(IN) :: lbl
 c common variables:
 !       include 'init.inc'
 !       include 'common.inc'
@@ -30,7 +39,7 @@ c_______________________________________________________________________
 c executable code:
 
 c----a5
-      if (lbl.eq.'bem') then
+      if (lbl.eq.bem) then
          a5muv = CMPLX(0.0,0.0)
          a5muu = CMPLX(0.0,0.0)
          a5muw = CMPLX(0.0,0.0)
@@ -41,7 +50,7 @@ c----a5
          a5mwv = CMPLX(0.0,0.0)
          a5mww = CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'ben') then
+      elseif (lbl.eq.ben) then
          a5nuv = CMPLX(0.0,0.0)
          a5nuu = CMPLX(1.0,0.0)
          a5nuw = CMPLX(0.0,0.0)
@@ -52,7 +61,7 @@ c----a5
          a5nwv = CMPLX(0.0,0.0)
          a5nww = CMPLX(1.0,0.0)
 
-      elseif (lbl.eq.'bep') then
+      elseif (lbl.eq.bep) then
          a5puv = CMPLX(0.0,0.0)
          a5puu = CMPLX(0.0,0.0)
          a5puw = CMPLX(0.0,0.0)
@@ -63,7 +72,7 @@ c----a5
          a5pwv = CMPLX(0.0,0.0)
          a5pww = CMPLX(0.0,0.0)
 c----a2
-      elseif (lbl.eq.'aam') then
+      elseif (lbl.eq.aam) then
          a2muv = CMPLX(0.0,0.0)
          a2muu = CMPLX(0.0,0.0)
          a2muw = CMPLX(0.0,0.0)
@@ -74,7 +83,7 @@ c----a2
          a2mwv = CMPLX(0.0,0.0)
          a2mww = CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'aan') then
+      elseif (lbl.eq.aan) then
          a2nuv = CMPLX(0.0,0.0)
          a2nuu = CMPLX(0.0,0.0)
          a2nuw = CMPLX(0.0,0.0)
@@ -85,7 +94,7 @@ c----a2
          a2nwv = CMPLX(0.0,0.0)
          a2nww = CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'aap') then
+      elseif (lbl.eq.aap) then
          a2puv = CMPLX(0.0,0.0)
          a2puu = CMPLX(0.0,0.0)
          a2puw = CMPLX(0.0,0.0)
@@ -96,7 +105,7 @@ c----a2
          a2pwv = CMPLX(0.0,0.0)
          a2pww = CMPLX(0.0,0.0)
 c----a8
-      elseif (lbl.eq.'ccm') then
+      elseif (lbl.eq.ccm) then
          a8muv = CMPLX(0.0,0.0)
          a8muu = CMPLX(0.0,0.0)
          a8muw = CMPLX(0.0,0.0)
@@ -107,7 +116,7 @@ c----a8
          a8mwv = CMPLX(0.0,0.0)
          a8mww = CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'ccn') then
+      elseif (lbl.eq.ccn) then
          a8nuv = CMPLX(0.0,0.0)
          a8nuu = CMPLX(0.0,0.0)
          a8nuw = CMPLX(0.0,0.0)
@@ -118,7 +127,7 @@ c----a8
          a8nwv = CMPLX(0.0,0.0)
          a8nww = CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'ccp') then
+      elseif (lbl.eq.ccp) then
          a8puv = CMPLX(0.0,0.0)
          a8puu = CMPLX(0.0,0.0)
          a8puw = CMPLX(0.0,0.0)
@@ -129,7 +138,7 @@ c----a8
          a8pwv = CMPLX(0.0,0.0)
          a8pww = CMPLX(0.0,0.0)
 c----a4
-      elseif (lbl.eq.'ddm') then
+      elseif (lbl.eq.ddm) then
          a4muv = CMPLX(0.0,0.0)
          a4muu = CMPLX(0.0,0.0)
          a4muw = CMPLX(0.0,0.0)
@@ -140,7 +149,7 @@ c----a4
          a4mwv = CMPLX(0.0,0.0)
          a4mww = CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'ddn') then
+      elseif (lbl.eq.ddn) then
          a4nuv = CMPLX(0.0,0.0)
          a4nuu = CMPLX(0.0,0.0)
          a4nuw = CMPLX(0.0,0.0)
@@ -151,7 +160,7 @@ c----a4
          a4nwv = CMPLX(0.0,0.0)
          a4nww = CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'ddp') then
+      elseif (lbl.eq.ddp) then
          a4puv = CMPLX(0.0,0.0)
          a4puu = CMPLX(0.0,0.0)
          a4puw = CMPLX(0.0,0.0)
@@ -162,7 +171,7 @@ c----a4
          a4pwv = CMPLX(0.0,0.0)
          a4pww = CMPLX(0.0,0.0)
 c----a6
-      elseif (lbl.eq.'ffm') then
+      elseif (lbl.eq.ffm) then
          a6muv = CMPLX(0.0,0.0)
          a6muu = CMPLX(0.0,0.0)
          a6muw = CMPLX(0.0,0.0)
@@ -173,7 +182,7 @@ c----a6
          a6mwv = CMPLX(0.0,0.0)
          a6mww = CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'ffn') then
+      elseif (lbl.eq.ffn) then
          a6nuv = CMPLX(0.0,0.0)
          a6nuu = CMPLX(0.0,0.0)
          a6nuw = CMPLX(0.0,0.0)
@@ -184,7 +193,7 @@ c----a6
          a6nwv = CMPLX(0.0,0.0)
          a6nww = CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'ffp') then
+      elseif (lbl.eq.ffp) then
          a6puv = CMPLX(0.0,0.0)
          a6puu = CMPLX(0.0,0.0)
          a6puw = CMPLX(0.0,0.0)
@@ -195,7 +204,7 @@ c----a6
          a6pwv = CMPLX(0.0,0.0)
          a6pww = CMPLX(0.0,0.0)
 c----a1
-      elseif (lbl.eq.'adm') then
+      elseif (lbl.eq.adm) then
          a1muv = CMPLX(0.0,0.0)
          a1muu = CMPLX(0.0,0.0)
          a1muw = CMPLX(0.0,0.0)
@@ -206,7 +215,7 @@ c----a1
          a1mwv = CMPLX(0.0,0.0)
          a1mww = CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'adn') then
+      elseif (lbl.eq.adn) then
          a1nuv = CMPLX(0.0,0.0)
          a1nuu = CMPLX(0.0,0.0)
          a1nuw = CMPLX(0.0,0.0)
@@ -217,7 +226,7 @@ c----a1
          a1nwv = CMPLX(0.0,0.0)
          a1nww = CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'adp') then
+      elseif (lbl.eq.adp) then
          a1puv = CMPLX(0.0,0.0)
          a1puu = CMPLX(0.0,0.0)
          a1puw = CMPLX(0.0,0.0)
@@ -228,7 +237,7 @@ c----a1
          a1pwv = CMPLX(0.0,0.0)
          a1pww = CMPLX(0.0,0.0)
 c----a9
-      elseif (lbl.eq.'cfm') then
+      elseif (lbl.eq.cfm) then
          a9muv = CMPLX(0.0,0.0)
          a9muu = CMPLX(0.0,0.0)
          a9muw = CMPLX(0.0,0.0)
@@ -239,7 +248,7 @@ c----a9
          a9mwv = CMPLX(0.0,0.0)
          a9mww = CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'cfn') then
+      elseif (lbl.eq.cfn) then
          a9nuv = CMPLX(0.0,0.0)
          a9nuu = CMPLX(0.0,0.0)
          a9nuw = CMPLX(0.0,0.0)
@@ -250,7 +259,7 @@ c----a9
          a9nwv = CMPLX(0.0,0.0)
          a9nww = CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'cfp') then
+      elseif (lbl.eq.cfp) then
          a9puv = CMPLX(0.0,0.0)
          a9puu = CMPLX(0.0,0.0)
          a9puw = CMPLX(0.0,0.0)
@@ -261,7 +270,7 @@ c----a9
          a9pwv = CMPLX(0.0,0.0)
          a9pww = CMPLX(0.0,0.0)
 c----a3
-      elseif (lbl.eq.'afm') then
+      elseif (lbl.eq.afm) then
          a3muv = CMPLX(0.0,0.0)
          a3muu = CMPLX(0.0,0.0)
          a3muw = CMPLX(0.0,0.0)
@@ -272,7 +281,7 @@ c----a3
          a3mwv = CMPLX(0.0,0.0)
          a3mww = CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'afn') then
+      elseif (lbl.eq.afn) then
          a3nuv = CMPLX(0.0,0.0)
          a3nuu = CMPLX(0.0,0.0)
          a3nuw = CMPLX(0.0,0.0)
@@ -283,7 +292,7 @@ c----a3
          a3nwv = CMPLX(0.0,0.0)
          a3nww = CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'afp') then
+      elseif (lbl.eq.afp) then
          a3puv = CMPLX(0.0,0.0)
          a3puu = CMPLX(0.0,0.0)
          a3puw = CMPLX(0.0,0.0)
@@ -294,7 +303,7 @@ c----a3
          a3pwv = CMPLX(0.0,0.0)
          a3pww = CMPLX(0.0,0.0)
 c----a7
-      elseif (lbl.eq.'cdm') then
+      elseif (lbl.eq.cdm) then
          a7muv = CMPLX(0.0,0.0)
          a7muu = CMPLX(0.0,0.0)
          a7muw = CMPLX(0.0,0.0)
@@ -305,7 +314,7 @@ c----a7
          a7mwv = CMPLX(0.0,0.0)
          a7mww = CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'cdn') then
+      elseif (lbl.eq.cdn) then
          a7nuv = CMPLX(0.0,0.0)
          a7nuu = CMPLX(0.0,0.0)
          a7nuw = CMPLX(0.0,0.0)
@@ -316,7 +325,7 @@ c----a7
          a7nwv = CMPLX(0.0,0.0)
          a7nww = CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'cdp') then
+      elseif (lbl.eq.cdp) then
          a7puv = CMPLX(0.0,0.0)
          a7puu = CMPLX(0.0,0.0)
          a7puw = CMPLX(0.0,0.0)
@@ -329,7 +338,7 @@ c----a7
 
       else
          write(*,100) lbl
-  100    format(' warning: fixed cannot identify coefficient ',a2,'!')
+  100    format(' warning: fixed cannot identify coefficient ',i2,'!')
 
       endif
 

@@ -5,6 +5,15 @@
      ;                          lp2u5, lp2u6, lp2u7, lp2u8,
      ;                          u5, u6, u7, u8
       USE MODEL_MODULE, ONLY : omega, dx, dy, nx, ny
+      USE FD_ENUM_MODULE, ONLY : bem, ben, bep,
+     ;                           adm, adn, adp,
+     ;                           aam, aan, aap,
+     ;                           afm, afn, afp,
+     ;                           ddm, ddn, ddp,
+     ;                           ffm, ffn, ffp,
+     ;                           cdm, cdn, cdp,
+     ;                           ccm, ccn, ccp,
+     ;                           cfm, cfn, cfp
       USE PML_MODULE, ONLY : pmld, pmlf, ipml
       USE MAT_MODULE
       IMPLICIT NONE
@@ -18,8 +27,7 @@ c
 c parameters:
 c     include 'dimension.inc'
 c arguments:
-      INTEGER, INTENT(IN) :: ix, iy
-      CHARACTER(3), INTENT(IN) :: lbl
+      INTEGER, INTENT(IN) :: lbl, ix, iy
       INTEGER, INTENT(OUT) :: ierr
 c common variables:
 c     include 'init.inc'
@@ -114,7 +122,7 @@ c  it is retained here only for asthetics.
 
       dxo8 = 1.0/(dx*8.0)
 
-      if (lbl.eq.'adm') then
+      if (lbl.eq.adm) then
          a1mUU =  CMPLX(0.0,0.0)
          a1mUV =  CMPLX(0.0,0.0)
          a1mUW =  CMPLX(0.0,0.0)
@@ -125,7 +133,7 @@ c  it is retained here only for asthetics.
          a1mWV =  CMPLX(0.0,0.0)
          a1mWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'adn') then
+      elseif (lbl.eq.adn) then
          a1nUU =  CMPLX(0.0,0.0)
          a1nUV =  CMPLX(0.0,0.0)
          a1nUW =  CMPLX(0.0,0.0)
@@ -136,7 +144,7 @@ c  it is retained here only for asthetics.
          a1nWV =  CMPLX(0.0,0.0)
          a1nWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'adp') then
+      elseif (lbl.eq.adp) then
          a1pUU =  CMPLX(0.0,0.0)
          a1pUV =  CMPLX(0.0,0.0)
          a1pUW =  CMPLX(0.0,0.0)
@@ -147,7 +155,7 @@ c  it is retained here only for asthetics.
          a1pWV =  CMPLX(0.0,0.0)
          a1pWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'aam') then
+      elseif (lbl.eq.aam) then
          a2mUU =  CMPLX(0.0,0.0)
          a2mUV =  CMPLX(0.0,0.0)
          a2mUW =  CMPLX(0.0,0.0)
@@ -158,7 +166,7 @@ c  it is retained here only for asthetics.
          a2mWV =  CMPLX(0.0,0.0)
          a2mWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'aan') then
+      elseif (lbl.eq.aan) then
          a2nUU =  CMPLX(0.0,0.0)
          a2nUV =  CMPLX(0.0,0.0)
          a2nUW =  CMPLX(0.0,0.0)
@@ -169,7 +177,7 @@ c  it is retained here only for asthetics.
          a2nWV =  CMPLX(0.0,0.0)
          a2nWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'aap') then
+      elseif (lbl.eq.aap) then
          a2pUU =  CMPLX(0.0,0.0)
          a2pUV =  CMPLX(0.0,0.0)
          a2pUW =  CMPLX(0.0,0.0)
@@ -180,7 +188,7 @@ c  it is retained here only for asthetics.
          a2pWV =  CMPLX(0.0,0.0)
          a2pWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'afm') then
+      elseif (lbl.eq.afm) then
          a3mUU =  r1z*dxo8*u5
          a3mUV =  CMPLX(0.0,0.0)
          a3mUW = -r1x*dxo8*u5
@@ -191,7 +199,7 @@ c  it is retained here only for asthetics.
          a3mWV = -r1y*dxo8*da5
          a3mWW =  r1z*dxo8*lp2u5
 
-      elseif (lbl.eq.'afn') then
+      elseif (lbl.eq.afn) then
          a3nUU =  CMPLX(0.0,0.0)
          a3nUV =  CMPLX(0.0,0.0)
          a3nUW =  CMPLX(0.0,0.0)
@@ -202,7 +210,7 @@ c  it is retained here only for asthetics.
          a3nWV =  CMPLX(0.0,0.0)
          a3nWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'afp') then
+      elseif (lbl.eq.afp) then
          a3pUU =  r1z*dxo8*u6
          a3pUV =  CMPLX(0.0,0.0)
          a3pUW = -r1x*dxo8*u6
@@ -213,7 +221,7 @@ c  it is retained here only for asthetics.
          a3pWV =  r1y*dxo8*da6
          a3pWW =  r1z*dxo8*lp2u6
 
-      elseif (lbl.eq.'ddm') then
+      elseif (lbl.eq.ddm) then
          a4mUU =  CMPLX(0.0,0.0)
          a4mUV =  CMPLX(0.0,0.0)
          a4mUW =  CMPLX(0.0,0.0)
@@ -224,7 +232,7 @@ c  it is retained here only for asthetics.
          a4mWV =  CMPLX(0.0,0.0)
          a4mWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'ddn') then
+      elseif (lbl.eq.ddn) then
          a4nUU =  CMPLX(0.0,0.0)
          a4nUV =  CMPLX(0.0,0.0)
          a4nUW =  CMPLX(0.0,0.0)
@@ -235,7 +243,7 @@ c  it is retained here only for asthetics.
          a4nWV =  CMPLX(0.0,0.0)
          a4nWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'ddp') then
+      elseif (lbl.eq.ddp) then
          a4pUU =  CMPLX(0.0,0.0)
          a4pUV =  CMPLX(0.0,0.0)
          a4pUW =  CMPLX(0.0,0.0)
@@ -246,7 +254,7 @@ c  it is retained here only for asthetics.
          a4pWV =  CMPLX(0.0,0.0)
          a4pWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'bem') then
+      elseif (lbl.eq.bem) then
          a5mUU =  CMPLX(0.0,0.0)
          a5mUV =  CMPLX(0.0,0.0)
          a5mUW =  CMPLX(0.0,0.0)
@@ -257,7 +265,7 @@ c  it is retained here only for asthetics.
          a5mWV =  CMPLX(0.0,0.0)
          a5mWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'ben') then
+      elseif (lbl.eq.ben) then
          a5nUU = -r1z*dxo8*(u8 + u7 + u6 + u5)
          a5nUV =  CMPLX(0.0,0.0)
          a5nUW =  r1x*dxo8*(u5 - u8 + u6 - u7)
@@ -268,7 +276,7 @@ c  it is retained here only for asthetics.
          a5nWV =  r1y*dxo8*(da5 - da8 - da6 + da7)
          a5nWW = -r1z*dxo8*(lp2u8 + lp2u7 + lp2u6 + lp2u5)
 
-      elseif (lbl.eq.'bep') then
+      elseif (lbl.eq.bep) then
          a5pUU =  CMPLX(0.0,0.0)
          a5pUV =  CMPLX(0.0,0.0)
          a5pUW =  CMPLX(0.0,0.0)
@@ -279,7 +287,7 @@ c  it is retained here only for asthetics.
          a5pWV =  CMPLX(0.0,0.0)
          a5pWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'ffm') then
+      elseif (lbl.eq.ffm) then
          a6mUU =  CMPLX(0.0,0.0)
          a6mUV =  CMPLX(0.0,0.0)
          a6mUW =  CMPLX(0.0,0.0)
@@ -290,7 +298,7 @@ c  it is retained here only for asthetics.
          a6mWV =  CMPLX(0.0,0.0)
          a6mWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'ffn') then
+      elseif (lbl.eq.ffn) then
          a6nUU =  CMPLX(0.0,0.0)
          a6nUV =  CMPLX(0.0,0.0)
          a6nUW =  CMPLX(0.0,0.0)
@@ -301,7 +309,7 @@ c  it is retained here only for asthetics.
          a6nWV =  CMPLX(0.0,0.0)
          a6nWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'ffp') then
+      elseif (lbl.eq.ffp) then
          a6pUU =  CMPLX(0.0,0.0)
          a6pUV =  CMPLX(0.0,0.0)
          a6pUW =  CMPLX(0.0,0.0)
@@ -312,7 +320,7 @@ c  it is retained here only for asthetics.
          a6pWV =  CMPLX(0.0,0.0)
          a6pWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'cdm') then
+      elseif (lbl.eq.cdm) then
          a7mUU =  CMPLX(0.0,0.0)
          a7mUV =  CMPLX(0.0,0.0)
          a7mUW =  CMPLX(0.0,0.0)
@@ -323,7 +331,7 @@ c  it is retained here only for asthetics.
          a7mWV =  CMPLX(0.0,0.0)
          a7mWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'cdn') then
+      elseif (lbl.eq.cdn) then
          a7nUU =  CMPLX(0.0,0.0)
          a7nUV =  CMPLX(0.0,0.0)
          a7nUW =  CMPLX(0.0,0.0)
@@ -334,7 +342,7 @@ c  it is retained here only for asthetics.
          a7nWV =  CMPLX(0.0,0.0)
          a7nWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'cdp') then
+      elseif (lbl.eq.cdp) then
          a7pUU =  CMPLX(0.0,0.0)
          a7pUV =  CMPLX(0.0,0.0)
          a7pUW =  CMPLX(0.0,0.0)
@@ -345,7 +353,7 @@ c  it is retained here only for asthetics.
          a7pWV =  CMPLX(0.0,0.0)
          a7pWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'ccm') then
+      elseif (lbl.eq.ccm) then
          a8mUU =  CMPLX(0.0,0.0)
          a8mUV =  CMPLX(0.0,0.0)
          a8mUW =  CMPLX(0.0,0.0)
@@ -356,7 +364,7 @@ c  it is retained here only for asthetics.
          a8mWV =  CMPLX(0.0,0.0)
          a8mWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'ccn') then
+      elseif (lbl.eq.ccn) then
          a8nUU =  CMPLX(0.0,0.0)
          a8nUV =  CMPLX(0.0,0.0)
          a8nUW =  CMPLX(0.0,0.0)
@@ -367,7 +375,7 @@ c  it is retained here only for asthetics.
          a8nWV =  CMPLX(0.0,0.0)
          a8nWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'ccp') then
+      elseif (lbl.eq.ccp) then
          a8pUU =  CMPLX(0.0,0.0)
          a8pUV =  CMPLX(0.0,0.0)
          a8pUW =  CMPLX(0.0,0.0)
@@ -378,7 +386,7 @@ c  it is retained here only for asthetics.
          a8pWV =  CMPLX(0.0,0.0)
          a8pWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'cfm') then
+      elseif (lbl.eq.cfm) then
          a9mUU =  r1z*dxo8*u7
          a9mUV =  CMPLX(0.0,0.0)
          a9mUW =  r1x*dxo8*u7
@@ -389,7 +397,7 @@ c  it is retained here only for asthetics.
          a9mWV = -r1y*dxo8*da7
          a9mWW =  r1z*dxo8*lp2u7
 
-      elseif (lbl.eq.'cfn') then
+      elseif (lbl.eq.cfn) then
          a9nUU =  CMPLX(0.0,0.0)
          a9nUV =  CMPLX(0.0,0.0)
          a9nUW =  CMPLX(0.0,0.0)
@@ -400,7 +408,7 @@ c  it is retained here only for asthetics.
          a9nWV =  CMPLX(0.0,0.0)
          a9nWW =  CMPLX(0.0,0.0)
 
-      elseif (lbl.eq.'cfp') then
+      elseif (lbl.eq.cfp) then
          a9pUU =  r1z*dxo8*u8
          a9pUV =  CMPLX(0.0,0.0)
          a9pUW =  r1x*dxo8*u8

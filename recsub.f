@@ -1,8 +1,8 @@
-        subroutine recsub(projnm,
-     ;                    ncom, nsam, nom, ngt,
-     ;                    recin,
-     ;                    deltatt,freq,
-     ;                    receiver, ierr)  
+      SUBROUTINE recsub(projnm,
+     ;                  ncom, nsam, nom, ngt,
+     ;                  recin,
+     ;                  deltatt,freq,
+     ;                  receiver, ierr)  
 c 
 c     Reads the receiver time functions 
 c 
@@ -28,9 +28,6 @@ c     ierr       != 0 then an error was encountered
 c     receiver   frequency domain receiver response for all receivers 
 c 
       IMPLICIT NONE
-
-c       include 'dimension.inc'
-
       CHARACTER(*), INTENT(IN) :: projnm 
       REAL, DIMENSION(:), INTENT(IN) :: freq
       REAL, INTENT(IN) :: deltatt
@@ -54,9 +51,9 @@ c.... read appropriate receiver file
       ierr = 0 
       if (ncom.ge.3) then 
          write(*,*)      ''
-         write(*,*)      'RECSUB: '
+         write(*,*)      'recsub: '
 c        write(lunlog,*) ''
-c        write(lunlog,*) 'RECSUB: '
+c        write(lunlog,*) 'recsub: '
       endif
       if (recin.eq.1) then 
          WRITE(*,*) 'recin == 1 not yet done'
@@ -72,8 +69,8 @@ c-------we use microseconds in the rec file
          dtms = dt/1000. !convert to milli-seconds 
          deltat = deltatt 
          if (dtms.ne.deltatt) then 
-            write(*,*)      'RECSUB Error: Sampling rates do not match!'
-c           write(lunlog,*) 'RECSUB Error: Sampling rates do not match!'
+            write(*,*)      'recsub Error: Sampling rates do not match!'
+c           write(lunlog,*) 'recsub Error: Sampling rates do not match!'
             write(*,*) ' From file: ', dtms,' from ini: ', deltatt
             ierr = 1 
             return 
@@ -81,8 +78,8 @@ c           write(lunlog,*) 'RECSUB Error: Sampling rates do not match!'
          nguse = ng  
 
          if (ng.ne.ngt) then 
-            write(*,*)'RECSUB Warning: Number of receivers doesnt match'
-c           write(lunlog,*) 'RECSUB Warning: Number of receivers doesnt match'
+            write(*,*)'recsub Warning: Number of receivers doesnt match'
+c           write(lunlog,*) 'recsub Warning: Number of receivers doesnt match'
             if (ng.lt.ngt) then 
                nguse = 1 
                write(*,*) '       Using first record for all receivers'
@@ -97,9 +94,9 @@ c              write(lunlog,*) '       Will use first ',ng,' receiverrecords'
          endif 
 
          if (startt.ne.0.) then 
-            write(*,*) '       RECSUB Warning: Receiver starts at ',
+            write(*,*) '       recsub Warning: Receiver starts at ',
      ;                 startt,' (s)'
-c           write(lunlog,*) '       RECSUB Warning: Receiver starts at ',startt,' (s)'
+c           write(lunlog,*) '       recsub Warning: Receiver starts at ',startt,' (s)'
             write(*,*)      '       Setting startt = 0'
 c           write(lunlog,*) '       Setting startt = 0'
             startt = 0. 
@@ -145,12 +142,12 @@ c                 write(lunlog,901) i,omega/(2.*pi),receiver(i,ifreq)
 c.... input a frequency receiver component 
       elseif (recin.eq.2) then  
          ng = ngt
-         write(*,*) 'RECSUB Error: IO not yet programmed'
+         write(*,*) 'recsub Error: IO not yet programmed'
          ierr = 1 
          return
          if (nomin.ne.nom) then 
-            write(*,*)      'RECSUB error: frequency mismatch'
-c           write(lunlog,*) 'RECSUB error: frequency mismatch'
+            write(*,*)      'recsub error: frequency mismatch'
+c           write(lunlog,*) 'recsub error: frequency mismatch'
             ierr = 1 
             return 
          endif 
@@ -164,15 +161,16 @@ c           write(lunlog,*) 'RECSUB error: frequency mismatch'
  
 c.... Greens Function computation 
       elseif (recin.eq.3) then 
-          ng = ngt
-          do ifreq = 1,nom 
-             do j = 1,ngt 
-                receiver(j,ifreq) = CMPLX(1.0,0.0)
-             enddo
-          enddo
+         WRITE(*,*) 'recsub: Assigning delta function to RRFs'
+         ng = ngt
+         do ifreq = 1,nom 
+            do j = 1,ngt 
+               receiver(j,ifreq) = CMPLX(1.0,0.0)
+            enddo
+         enddo
       else 
-          write(*,*)      'RECSUB Error: Invalid choice for recin'
-c         write(lunlog,*) 'RECSUB Error: Invalid choice for recin'
+          write(*,*)      'recsub Error: Invalid choice for recin'
+c         write(lunlog,*) 'recsub Error: Invalid choice for recin'
           ierr = 1
           return 
       endif 
@@ -181,8 +179,8 @@ c         write(lunlog,*) 'RECSUB Error: Invalid choice for recin'
 
 c  60 CONTINUE
       ierr = 1 
-      write(*,*)      'RECSUB Error: Premature end of receiver file'
-c     write(lunlog,*) 'RECSUB Error: Premature end of receiver file'
+      write(*,*)      'recsub Error: Premature end of receiver file'
+c     write(lunlog,*) 'recsub Error: Premature end of receiver file'
 
       return 
       end  

@@ -1,44 +1,50 @@
       MODULE INTERFACE_MODULE
          INTERFACE
 
-            SUBROUTINE asmble(lunlog, nzero, nx, ny, nz, nzeror, &
-                              irn, jcn, a, ierr)
+            SUBROUTINE ASMBLE(lunlog, nzero, nx, ny, nz, &
+                              irptr, jcptr, a, ierr)
             IMPLICIT NONE
             INTEGER, INTENT(IN) :: nzero, lunlog 
-            INTEGER, INTENT(IN) :: nzeror(3*nx*ny*nz), irn(nzero), &
-                                   jcn(nzero), nx, ny, nz
+            INTEGER, INTENT(IN) :: irptr(3*nx*ny*nz+1), jcptr(nzero), &
+                                   nx, ny, nz
             COMPLEX, INTENT(OUT) :: a(nzero)
             INTEGER, INTENT(OUT) :: ierr
-            END SUBROUTINE asmble
+            END SUBROUTINE ASMBLE
 
-            SUBROUTINE calcwts(vp, vs, w1, w2, w3, wm1, wm2, wm3, wm4)
+            SUBROUTINE CALCWTS(vp, vs, w1, w2, w3, wm1, wm2, wm3, wm4)
             IMPLICIT NONE
             REAL, INTENT(IN) :: vp, vs
             REAL, INTENT(OUT) :: w1, w2, w3, wm1, wm2, wm3, wm4
-            END SUBROUTINE calcwts
+            END SUBROUTINE CALCWTS
 
-            SUBROUTINE dispersion()
+            SUBROUTINE DISPERSION()
             IMPLICIT NONE
-            END SUBROUTINE dispersion
+            END SUBROUTINE DISPERSION
 
-            SUBROUTINE fdfd3d(lbl, iz, ix, iy, ierr)
+            SUBROUTINE FDFD3D(lbl, iz, ix, iy, ierr)
             IMPLICIT NONE
-            INTEGER, INTENT(IN) ::      lbl, iz, ix, iy
-            INTEGER, INTENT(OUT) ::     ierr
-            END SUBROUTINE fdfd3d
+            INTEGER, INTENT(IN) :: lbl, iz, ix, iy
+            INTEGER, INTENT(OUT) :: ierr
+            END SUBROUTINE FDFD3D
 
-            SUBROUTINE fixed3d(lbl)
+            SUBROUTINE FIXED3D(lbl)
             IMPLICIT NONE
             INTEGER, INTENT(IN) :: lbl 
-            END SUBROUTINE fixed3d
+            END SUBROUTINE FIXED3D
 
-            SUBROUTINE hetfldsrc (srcfn, sfld, myid, master, ierr)
+            SUBROUTINE HETFLDSRC(srcfn, sfld, myid, master, ierr)
             IMPLICIT NONE
             COMPLEX, INTENT(IN) :: srcfn
             COMPLEX, DIMENSION(:), INTENT(OUT) :: sfld
             INTEGER, INTENT(IN) :: myid, master
             INTEGER, INTENT(OUT) :: ierr
-            END SUBROUTINE hetfldsrc
+            END SUBROUTINE HETFLDSRC
+
+            SUBROUTINE PLANEWVEXP(isrc, ierr)
+            IMPLICIT NONE
+            INTEGER, INTENT(IN) :: isrc
+            INTEGER, INTENT(OUT) :: ierr
+            END SUBROUTINE PLANEWVEXP
 
             SUBROUTINE INFO(nx, ny, nz, ns, nr, ng, nom)
             IMPLICIT NONE
@@ -276,5 +282,42 @@
             INTEGER, INTENT(IN) :: xadj(n+1), adjncy(nzero-n)
             INTEGER, INTENT(OUT) :: irptr(n+1), jcptr(nzero)
             END SUBROUTINE SPARSE_ADJ2CRS
+
+            SUBROUTINE SPARSE_CRS2COO(nzero, n, irptr, jcptr, irn, jcn)
+            IMPLICIT NONE
+            INTEGER, INTENT(IN) :: nzero, n
+            INTEGER, INTENT(IN) :: irptr(n+1), jcptr(nzero) 
+            INTEGER, INTENT(OUT) :: irn(nzero), jcn(nzero)
+            END SUBROUTINE SPARSE_CRS2COO
          END INTERFACE
       END MODULE SPARSE_MODULE
+
+      MODULE STRUMPACK_MODULE
+         INTERFACE
+            SUBROUTINE STRUMPACK_SERIAL_FINTER(job, nrows, nnz, &
+                                               irptr, jcptr, a, &
+                                               rhs, x, ierr)    &
+                       BIND(C,NAME='strumpack_serial_finter')
+            USE ISO_C_BINDING
+            INTEGER(C_INT), INTENT(IN) :: job, nrows, nnz
+            INTEGER(C_INT), INTENT(IN) :: irptr(nrows+1), jcptr(nnz)
+            COMPLEX(C_FLOAT_COMPLEX), INTENT(IN) :: a(nnz), rhs(nrows)
+            COMPLEX(C_FLOAT_COMPLEX), INTENT(OUT) :: x(nrows)
+            INTEGER(C_INT), INTENT(OUT) :: ierr
+            END SUBROUTINE STRUMPACK_SERIAL_FINTER
+         END INTERFACE
+      END MODULE STRUMPACK_MODULE
+
+      MODULE METIS5_MODULE
+         INTERFACE 
+            SUBROUTINE METIS_PartGraphKway_finter(n, nparts, xadj, adjncy, &
+                                                  part, ierr) &
+                       BIND(C,NAME='METIS_PartGraphKway_finter')
+            USE ISO_C_BINDING
+            IMPLICIT NONE
+            INTEGER(C_INT), INTENT(IN) :: n, nparts
+            INTEGER(C_INT), INTENT(IN) :: xadj(n+1), adjncy(*)
+            INTEGER(C_INT), INTENT(OUT) :: part(n), ierr
+            END SUBROUTINE
+         END INTERFACE
+      END MODULE METIS5_MODULE

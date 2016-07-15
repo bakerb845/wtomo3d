@@ -6,7 +6,7 @@ c     that is, u_t = u_h + u_0.  here sfld holds the heterogeneous
 c     displacement, u_h.   
 c 
 c 
-      USE SOURCE_MODULE, ONLY : srctyp
+      USE SRCPRM_MODULE, ONLY : srctyp
       USE WAVEFIELD_MODULE, ONLY : utbkr, vtbkr, wtbkr, ufac, vfac, wfac
       USE RECPRM_MODULE, ONLY : xg, yg, zg, xr, yr, zr,
      ;                          sg, sr, receiver,

@@ -47,3 +47,37 @@
       irptr(n+1) = nzero + 1
       RETURN
       END
+!                                                                      !
+!======================================================================!
+!                                                                      !
+!>    @brief Converts a compressed sparse row row to compressed ordinate
+!>
+!>    @param[in] nzero    number of non-zeros in matrix
+!>    @param[in] n        number of rows in matrix
+!>    @param[in] irptr    maps from i'th row to start index of jcptr
+!>                        [n+1]
+!>    @param[in] jcptr    maps from iz'th non-zero to column number
+!>                        [nzero] 
+!>
+!>    @param[out] irn     maps from iz'th non-zero to row index [nzero]
+!>    @param[out] jcn     maps from iz'th non-zero to column index
+!>                        [nzero]
+!>
+!>    @author Ben Baker
+!>
+      SUBROUTINE SPARSE_CRS2COO(nzero, n, irptr, jcptr, irn, jcn)
+      IMPLICIT NONE
+      INTEGER, INTENT(IN) :: nzero, n
+      INTEGER, INTENT(IN) :: irptr(n+1), jcptr(nzero) 
+      INTEGER, INTENT(OUT) :: irn(nzero), jcn(nzero)
+      INTEGER i, j, jbeg, jend
+      DO 1 i=1,n
+         jbeg = irptr(i)
+         jend = irptr(i+1) - 1
+         DO 2 j=jbeg,jend
+            irn(j) = i
+            jcn(j) = jcptr(j)
+    2    CONTINUE
+    1 CONTINUE
+      RETURN
+      END

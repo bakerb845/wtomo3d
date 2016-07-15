@@ -1,16 +1,16 @@
-      SUBROUTINE asmble(lunlog, nzero, nx, ny, nz, nzeror, &
-                        irn, jcn, a, ierr)
+      SUBROUTINE ASMBLE(lunlog, nzero, nx, ny, nz, &
+                        irptr, jcptr, a, ierr)
 ! 
 !     input      meaning 
 !     -----      ------- 
-!     irn        row pointer 
-!     jcn        column pointer 
+!     irptr      CSR row pointer 
+!     jcptr      CSR column pointer 
 !     lunlog     log file id number
 !     nx         number of x grid points 
 !     ny         number of y grid points 
 !     nz         number of z grid points 
 !     nzero      number of non-zeros 
-!     nzeror     number of non zeros in each row of matrix
+!     irptr      CSR row pointer (3*nx*ny*nz+1)
 !  
 !     output     meaning 
 !     ------     ------- 
@@ -78,12 +78,12 @@
       IMPLICIT NONE
 
       INTEGER, INTENT(IN) :: nzero, lunlog 
-      INTEGER, INTENT(IN) :: irn(nzero), jcn(nzero), &
-                             nzeror(3*nx*ny*nz), nx, ny, nz
+      INTEGER, INTENT(IN) :: irptr(3*nx*ny*nz+1), jcptr(nzero), &
+                             nx, ny, nz
       COMPLEX, INTENT(OUT) :: a(nzero)
       INTEGER, INTENT(OUT) :: ierr
       INTEGER jstar(27), irow, ix, iy, iz,    & 
-              i, ierr1, nnz, izero, inz, loc, itest 
+              i, ierr1, nnz, izero, inz, j, loc, itest 
       INTEGER, PARAMETER :: nsd = 3
 
 
@@ -554,7 +554,8 @@
 !............. intially we check that this row fits, and pointers are
 !............. correctly ordered  
                  irow = irow + 1 
-                 if (nzeror(irow).ne.nnz) then 
+                 !if (nzeror(irow).ne.nnz) then 
+                 if (irptr(irow+1) - irptr(irow) /= nnz) then
                     ierr = ierr + 1
                     write(*,*) 'Error in asmble: nnz incorrect', irow
                     !write(*,*) 'Error in asmble: incorrect numbers of non-zeros in row', irow
@@ -603,8 +604,11 @@
       if (itest.eq.1) then
          open(unit=30,file='mymat.txt')
          print *, 'nzero =',nzero
-         do i=1,nzero
-            write(30,*) irn(i), jcn(i), a(i)
+         !do i=1,nzero
+         do i=1,3*nx*ny*nz
+            do j=irptr(i),irptr(i+1)-1
+               write(30,*) i, jcptr(j), a(j) !irn(i), jcn(i), a(i)
+            enddo
          enddo
          close(30)
          return

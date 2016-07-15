@@ -8,8 +8,7 @@ c
       IMPLICIT NONE
 
 c arguments:
-      INTEGER, INTENT(IN) ::      iz, ix, iy
-      CHARACTER(3), INTENT(IN) :: lbl
+      INTEGER, INTENT(IN) ::      lbl, iz, ix, iy
       INTEGER, INTENT(OUT) ::     ierr
 
 c       include 'dimension.inc'            

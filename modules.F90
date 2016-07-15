@@ -1,8 +1,9 @@
       MODULE INIT_MODULE
          IMPLICIT NONE
          !REAL azm, dx, dy, dz, freqbase, xorig, yorig, zorig
+         REAL tau
          INTEGER ncom!, nx, ny, nz
-         LOGICAL totfld, usemin
+         LOGICAL infspace, totfld, usemin
          SAVE
       END MODULE
 
